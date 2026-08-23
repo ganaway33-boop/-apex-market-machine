@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#070b12">
+<title>APEX Market Machine</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:#070b12;
+  color:#f4f7fb;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+.app{
+  max-width:1200px;
+  margin:auto;
+  padding:18px;
+}
+header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+  margin-bottom:20px;
+}
+.logo{
+  font-size:25px;
+  font-weight:900;
+  letter-spacing:.5px;
+}
+.logo span{color:#35e59a}
+.status{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  font-size:12px;
+  color:#8c99aa;
+}
+.dot{
+  width:9px;
+  height:9px;
+  border-radius:50%;
+  background:#35e59a;
+  box-shadow:0 0 12px #35e59a;
+}
+.hero{
+  background:linear-gradient(145deg,#101927,#0b111c);
+  border:1px solid #1d2a3b;
+  border-radius:22px;
+  padding:22px;
+  margin-bottom:16px;
+}
+.eyebrow{
+  color:#7e8da2;
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:1.5px;
+}
+h1{
+  margin:7px 0 8px;
+  font-size:30px;
+}
+.subtitle{
+  color:#8e9bad;
+  font-size:14px;
+  line-height:1.5;
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+  margin-top:20px;
+}
+.card{
+  background:#0d141f;
+  border:1px solid #1b2838;
+  border-radius:17px;
+  padding:16px;
+}
+.label{
+  color:#7f8da0;
+  font-size:11px;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:1px;
+}
+.value{
+  margin-top:7px;
+  font-size:23px;
+  font-weight:850;
+}
+.green{color:#35e59a}
+.yellow{color:#ffd166}
+.red{color:#ff6678}
+.blue{color:#67a8ff}
+
+.section{
+  margin-top:18px;
+}
+.section-title{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:10px;
+}
+.section-title h2{
+  font-size:17px;
+  margin:0;
+}
+.scan{
+  color:#7f8da0;
+  font-size:12px;
+}
+
+.signal{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  background:#0d141f;
+  border:1px solid #1b2838;
+  border-radius:17px;
+  padding:16px;
+  margin-bottom:10px;
+}
+.symbol{
+  font-size:18px;
+  font-weight:850;
+}
+.company{
+  color:#7f8da0;
+  font-size:12px;
+  margin-top:3px;
+}
+.score{
+  text-align:right;
+}
+.score-number{
+  font-size:22px;
+  font-weight:900;
+}
+.badge{
+  display:inline-block;
+  margin-top:4px;
+  padding:4px 8px;
+  border-radius:8px;
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:.5px;
+  background:#162338;
+  color:#67a8ff;
+}
+.badge.prime{
+  background:#123b2b;
+  color:#35e59a;
+}
+.badge.watch{
+  background:#3b3013;
+  color:#ffd166;
+}
+
+.feed{
+  max-height:310px;
+  overflow:auto;
+}
+.feed-row{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  padding:12px 0;
+  border-bottom:1px solid #172231;
+  font-size:13px;
+}
+.feed-row:last-child{border-bottom:0}
+.time{color:#627086;font-size:11px}
+.feed-text{color:#b9c4d3}
+
+.controls{
+  display:flex;
+  gap:9px;
+  flex-wrap:wrap;
+  margin-top:15px;
+}
+button{
+  border:1px solid #26364a;
+  background:#111b29;
+  color:#eaf0f7;
+  border-radius:12px;
+  padding:11px 14px;
+  font-weight:750;
+  cursor:pointer;
+}
+button.primary{
+  background:#35e59a;
+  color:#06110c;
+  border-color:#35e59a;
+}
+button:active{transform:scale(.98)}
+
+.footer{
+  text-align:center;
+  color:#59677b;
+  font-size:11px;
+  padding:25px 0 10px;
+}
+
+@media(max-width:800px){
+  .grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:480px){
+  .app{padding:13px}
+  h1{font-size:25px}
+  .grid{gap:9px}
+  .card{padding:13px}
+  .value{font-size:20px}
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+<header>
+  <div class="logo">APEX<span>+</span></div>
+  <div class="status">
+    <span class="dot"></span>
+    <span id="status">ENGINE ONLINE</span>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="eyebrow">MARKET MACHINE</div>
+  <h1>Evidence First. No Chase.</h1>
+  <div class="subtitle">
+    APEX scans momentum, volume, catalysts, confirmation,
+    liquidity and risk/reward before promoting a setup.
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="label">APEX Score</div>
+      <div class="value green" id="apexScore">87</div>
+    </div>
+
+    <div class="card">
+      <div class="label">Market Regime</div>
+      <div class="value blue" id="regime">RISK-ON</div>
+    </div>
+
+    <div class="card">
+      <div class="label">Setups</div>
+      <div class="value" id="setupCount">3</div>
+    </div>
+
+    <div class="card">
+      <div class="label">Last Scan</div>
+      <div class="value" id="lastScan">--:--</div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button class="primary" onclick="runScan()">RUN APEX SCAN</button>
+    <button onclick="toggleAuto()">AUTO: <span id="auto">ON</span></button>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-title">
+    <h2>🔥 PRIME WATCHLIST</h2>
+    <span class="scan">Highest conviction</span>
+  </div>
+
+  <div id="signals">
+
+    <div class="signal">
+      <div>
+        <div class="symbol">NVDA</div>
+        <div class="company">Momentum + volume confirmation</div>
+      </div>
+      <div class="score">
+        <div class="score-number green">94</div>
+        <span class="badge prime">PRIME</span>
+      </div>
+    </div>
+
+    <div class="signal">
+      <div>
+        <div class="symbol">IREN</div>
+        <div class="company">Catalyst + abnormal volume</div>
+      </div>
+      <div class="score">
+        <div class="score-number green">91</div>
+        <span class="badge prime">PRIME</span>
+      </div>
+    </div>
+
+    <div class="signal">
+      <div>
+        <div class="symbol">HLIT</div>
+        <div class="company">Momentum improving</div>
+      </div>
+      <div class="score">
+        <div class="score-number yellow">78</div>
+        <span class="badge watch">WATCH</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-title">
+    <h2>📡 APEX EVENT FEED</h2>
+    <span class="scan">Live engine log</span>
+  </div>
+
+  <div class="card feed" id="feed">
+
+    <div class="feed-row">
+      <span class="feed-text">APEX engine initialized</span>
+      <span class="time">NOW</span>
+    </div>
+
+    <div class="feed-row">
+      <span class="feed-text">Scanning abnormal volume</span>
+      <span class="time">NOW</span>
+    </div>
+
+    <div class="feed-row">
+      <span class="feed-text">Checking catalyst credibility</span>
+      <span class="time">NOW</span>
+    </div>
+
+    <div class="feed-row">
+      <span class="feed-text">Cross-checking confirmation</span>
+      <span class="time">NOW</span>
+    </div>
+
+    <div class="feed-row">
+      <span class="feed-text">Applying risk/reward filter</span>
+      <span class="time">NOW</span>
+    </div>
+
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-title">
+    <h2>🧠 APEX RULES</h2>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="label">Catalyst</div>
+      <div class="value blue">VERIFY</div>
+    </div>
+
+    <div class="card">
+      <div class="label">Volume</div>
+      <div class="value green">CONFIRM</div>
+    </div>
+
+    <div class="card">
+      <div class="label">Chasing</div>
+      <div class="value red">NO</div>
+    </div>
+
+    <div class="card">
+      <div class="label">Invalidation</div>
+      <div class="value yellow">REQUIRED</div>
+    </div>
+  </div>
+</section>
+
+<div class="footer">
+  APEX Market Machine • Evidence-first decision engine
+</div>
+
+</div>
+
+<script>
+
+let auto=true;
+let timer=null;
+
+function clock(){
+  return new Date().toLocaleTimeString([],{
+    hour:'2-digit',
+    minute:'2-digit'
+  });
+}
+
+function addFeed(text){
+  const feed=document.getElementById("feed");
+
+  const row=document.createElement("div");
+  row.className="feed-row";
+
+  row.innerHTML=
+    '<span class="feed-text">'+text+'</span>'+
+    '<span class="time">'+clock()+'</span>';
+
+  feed.prepend(row);
+
+  while(feed.children.length>12){
+    feed.removeChild(feed.lastChild);
+  }
+}
+
+function runScan(){
+
+  document.getElementById("status").textContent="SCANNING";
+
+  addFeed("APEX scan started");
+
+  setTimeout(()=>{
+    addFeed("Scanning momentum + trend alignment");
+  },500);
+
+  setTimeout(()=>{
+    addFeed("Checking abnormal volume");
+  },1000);
+
+  setTimeout(()=>{
+    addFeed("Validating catalyst");
+  },1500);
+
+  setTimeout(()=>{
+    addFeed("Cross-checking confirmation");
+  },2000);
+
+  setTimeout(()=>{
+    addFeed("Applying risk/reward filter");
+
+    document.getElementById("status").textContent="ENGINE ONLINE";
+    document.getElementById("lastScan").textContent=clock();
+
+    const score=Math.floor(82+Math.random()*15);
+    document.getElementById("apexScore").textContent=score;
+
+  },2500);
+}
+
+function toggleAuto(){
+
+  auto=!auto;
+
+  document.getElementById("auto").textContent=
+    auto ? "ON" : "OFF";
+
+  if(auto){
+    timer=setInterval(runScan,30000);
+    addFeed("Automatic scanning enabled");
+  }else{
+    clearInterval(timer);
+    addFeed("Automatic scanning paused");
+  }
+}
+
+document.getElementById("lastScan").textContent=clock();
+
+timer=setInterval(()=>{
+  if(auto) runScan();
+},30000);
+
+</script>
+
+</body>
+</html>
