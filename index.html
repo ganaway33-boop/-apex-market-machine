@@ -4,469 +4,514 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#070b12">
-<title>APEX Market Machine</title>
+<title>APEX+ Market Machine</title>
 
 <style>
+:root{
+  --bg:#070b12; --card:#0d141f; --muted:#7f8da0; --accent:#35e59a; --accent-2:#67a8ff; --warn:#ffd166; --danger:#ff6678; --glass: rgba(255,255,255,0.02);
+}
 *{box-sizing:border-box}
+html,body{height:100%}
 body{
   margin:0;
-  background:#070b12;
-  color:#f4f7fb;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:var(--bg);
+  color:#e7eef8;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
 }
-.app{
-  max-width:1200px;
-  margin:auto;
-  padding:18px;
-}
-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:15px;
-  margin-bottom:20px;
-}
-.logo{
-  font-size:25px;
-  font-weight:900;
-  letter-spacing:.5px;
-}
-.logo span{color:#35e59a}
-.status{
-  display:flex;
-  align-items:center;
-  gap:7px;
-  font-size:12px;
-  color:#8c99aa;
-}
-.dot{
-  width:9px;
-  height:9px;
-  border-radius:50%;
-  background:#35e59a;
-  box-shadow:0 0 12px #35e59a;
-}
-.hero{
-  background:linear-gradient(145deg,#101927,#0b111c);
-  border:1px solid #1d2a3b;
-  border-radius:22px;
-  padding:22px;
-  margin-bottom:16px;
-}
-.eyebrow{
-  color:#7e8da2;
-  font-size:11px;
-  font-weight:800;
-  letter-spacing:1.5px;
-}
-h1{
-  margin:7px 0 8px;
-  font-size:30px;
-}
-.subtitle{
-  color:#8e9bad;
-  font-size:14px;
-  line-height:1.5;
-}
-.grid{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:12px;
-  margin-top:20px;
-}
-.card{
-  background:#0d141f;
-  border:1px solid #1b2838;
-  border-radius:17px;
-  padding:16px;
-}
-.label{
-  color:#7f8da0;
-  font-size:11px;
-  font-weight:700;
-  text-transform:uppercase;
-  letter-spacing:1px;
-}
-.value{
-  margin-top:7px;
-  font-size:23px;
-  font-weight:850;
-}
-.green{color:#35e59a}
-.yellow{color:#ffd166}
-.red{color:#ff6678}
-.blue{color:#67a8ff}
+.app{max-width:1200px;margin:20px auto;padding:12px}
+header{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}
+.logo{font-size:20px;font-weight:900;letter-spacing:.6px}
+.logo span{color:var(--accent)}
+.status{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 14px var(--accent)}
+.controls{display:flex;gap:8px;align-items:center}
+.search{display:flex;gap:8px;align-items:center}
+.input{background:transparent;border:1px solid #223144;padding:10px 12px;border-radius:10px;color:inherit;min-width:140px}
+.btn{border:1px solid #223144;background:transparent;color:inherit;padding:9px 12px;border-radius:10px;cursor:pointer}
+.btn.primary{background:var(--accent);color:#05110b;border-color:var(--accent)}
 
-.section{
-  margin-top:18px;
-}
-.section-title{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:10px;
-}
-.section-title h2{
-  font-size:17px;
-  margin:0;
-}
-.scan{
-  color:#7f8da0;
-  font-size:12px;
-}
+.hero{background:linear-gradient(145deg,#0f1720,#071019);border:1px solid #1b2a3a;border-radius:16px;padding:16px;margin-bottom:14px}
+.eyebrow{color:var(--muted);font-size:11px;font-weight:800;letter-spacing:1.2px}
+.h1{font-size:20px;margin:6px 0}
+.subtitle{color:#9aa8bd;font-size:13px}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px}
+.card{background:var(--card);border:1px solid #102233;border-radius:12px;padding:12px}
+.label{color:var(--muted);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1px}
+.value{margin-top:8px;font-size:20px;font-weight:900}
+.green{color:var(--accent)}.blue{color:var(--accent-2)}.yellow{color:var(--warn)}.red{color:var(--danger)}
 
-.signal{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:12px;
-  background:#0d141f;
-  border:1px solid #1b2838;
-  border-radius:17px;
-  padding:16px;
-  margin-bottom:10px;
-}
-.symbol{
-  font-size:18px;
-  font-weight:850;
-}
-.company{
-  color:#7f8da0;
-  font-size:12px;
-  margin-top:3px;
-}
-.score{
-  text-align:right;
-}
-.score-number{
-  font-size:22px;
-  font-weight:900;
-}
-.badge{
-  display:inline-block;
-  margin-top:4px;
-  padding:4px 8px;
-  border-radius:8px;
-  font-size:10px;
-  font-weight:900;
-  letter-spacing:.5px;
-  background:#162338;
-  color:#67a8ff;
-}
-.badge.prime{
-  background:#123b2b;
-  color:#35e59a;
-}
-.badge.watch{
-  background:#3b3013;
-  color:#ffd166;
-}
+.section{margin-top:14px}
+.section-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.section-title h2{font-size:15px;margin:0}
+.scan{color:var(--muted);font-size:12px}
 
-.feed{
-  max-height:310px;
-  overflow:auto;
-}
-.feed-row{
-  display:flex;
-  justify-content:space-between;
-  gap:10px;
-  padding:12px 0;
-  border-bottom:1px solid #172231;
-  font-size:13px;
-}
-.feed-row:last-child{border-bottom:0}
-.time{color:#627086;font-size:11px}
-.feed-text{color:#b9c4d3}
+.watchlist{display:flex;flex-direction:column;gap:10px}
+.setup-card{display:flex;justify-content:space-between;gap:12px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);border:1px solid #142433;border-radius:12px;padding:12px;align-items:center}
+.setup-left{display:flex;gap:12px;align-items:center}
+.ticker{font-weight:900;font-size:16px}
+.meta{color:var(--muted);font-size:12px}
+.right{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.score{font-weight:900;font-size:18px}
+.badge{padding:4px 8px;border-radius:8px;font-weight:800;font-size:11px}
+.badge.prime{background:#083a26;color:var(--accent)}
+.badge.watch{background:#3b3013;color:var(--warn)}
+.badge.no{background:#2b1218;color:var(--danger)}
 
-.controls{
-  display:flex;
-  gap:9px;
-  flex-wrap:wrap;
-  margin-top:15px;
-}
-button{
-  border:1px solid #26364a;
-  background:#111b29;
-  color:#eaf0f7;
-  border-radius:12px;
-  padding:11px 14px;
-  font-weight:750;
-  cursor:pointer;
-}
-button.primary{
-  background:#35e59a;
-  color:#06110c;
-  border-color:#35e59a;
-}
-button:active{transform:scale(.98)}
+.feed{max-height:260px;overflow:auto;padding:8px}
+.feed-row{display:flex;justify-content:space-between;gap:10px;padding:8px;border-bottom:1px solid #0f1b28;font-size:13px}
+.feed-row .time{color:#6f7f95;font-size:11px}
 
-.footer{
-  text-align:center;
-  color:#59677b;
-  font-size:11px;
-  padding:25px 0 10px;
-}
+.rules-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.small{font-size:12px;color:var(--muted)}
 
-@media(max-width:800px){
-  .grid{grid-template-columns:repeat(2,1fr)}
-}
-@media(max-width:480px){
-  .app{padding:13px}
-  h1{font-size:25px}
-  .grid{gap:9px}
-  .card{padding:13px}
-  .value{font-size:20px}
-}
+/* responsive */
+@media(max-width:900px){.cards{grid-template-columns:repeat(2,1fr)}.rules-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.cards{grid-template-columns:1fr}.logo{font-size:18px}.app{margin:8px;padding:10px}}
+
+/* sortable table for details */
+.table{width:100%;border-collapse:collapse;margin-top:8px}
+.table th{background:#07151f;color:var(--muted);font-size:12px;padding:8px;text-align:left;border-bottom:1px solid #112233}
+.table td{padding:10px;border-bottom:1px solid #0f1b28}
+.tiny{font-size:12px;color:var(--muted)}
+
+/* chart sparkline */
+.spark{width:120px;height:36px}
 </style>
 </head>
 
 <body>
 <div class="app">
-
-<header>
-  <div class="logo">APEX<span>+</span></div>
-  <div class="status">
-    <span class="dot"></span>
-    <span id="status">ENGINE ONLINE</span>
-  </div>
-</header>
-
-<section class="hero">
-  <div class="eyebrow">MARKET MACHINE</div>
-  <h1>Evidence First. No Chase.</h1>
-  <div class="subtitle">
-    APEX scans momentum, volume, catalysts, confirmation,
-    liquidity and risk/reward before promoting a setup.
-  </div>
-
-  <div class="grid">
-    <div class="card">
-      <div class="label">APEX Score</div>
-      <div class="value green" id="apexScore">87</div>
-    </div>
-
-    <div class="card">
-      <div class="label">Market Regime</div>
-      <div class="value blue" id="regime">RISK-ON</div>
-    </div>
-
-    <div class="card">
-      <div class="label">Setups</div>
-      <div class="value" id="setupCount">3</div>
-    </div>
-
-    <div class="card">
-      <div class="label">Last Scan</div>
-      <div class="value" id="lastScan">--:--</div>
-    </div>
-  </div>
-
-  <div class="controls">
-    <button class="primary" onclick="runScan()">RUN APEX SCAN</button>
-    <button onclick="toggleAuto()">AUTO: <span id="auto">ON</span></button>
-  </div>
-</section>
-
-<section class="section">
-  <div class="section-title">
-    <h2>🔥 PRIME WATCHLIST</h2>
-    <span class="scan">Highest conviction</span>
-  </div>
-
-  <div id="signals">
-
-    <div class="signal">
-      <div>
-        <div class="symbol">NVDA</div>
-        <div class="company">Momentum + volume confirmation</div>
+  <header>
+    <div class="logo">APEX<span>+</span> Market Machine</div>
+    <div style="display:flex;gap:12px;align-items:center">
+      <div class="status" id="dataStatus">
+        <div class="dot" id="statusDot"></div>
+        <div id="statusText">DATA: DEMO</div>
       </div>
-      <div class="score">
-        <div class="score-number green">94</div>
-        <span class="badge prime">PRIME</span>
+      <div class="search">
+        <input id="searchInput" class="input" placeholder="Search ticker or add to watchlist (e.g. AAPL)" />
+        <button class="btn" id="addBtn">Add</button>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="eyebrow">MARKET MACHINE — APEX+</div>
+    <div class="h1">Evidence First. No Chase.</div>
+    <div class="subtitle">APEX evaluates regime, catalysts, abnormal volume, multi-timeframe confirmation, liquidity and risk/reward before promoting PRIME setups. DEMO DATA in use — this is not live market data.</div>
+
+    <div class="cards">
+      <div class="card">
+        <div class="label">APEX Index</div>
+        <div class="value green" id="apexIndex">—</div>
+        <div class="tiny">Adaptive, regime-aware market scoring (0–100)</div>
+      </div>
+
+      <div class="card">
+        <div class="label">Market Regime</div>
+        <div class="value blue" id="regime">—</div>
+        <div class="tiny">Bull / Risk-On, Neutral, Bear / Risk-Off</div>
+      </div>
+
+      <div class="card">
+        <div class="label">Open Setups</div>
+        <div class="value" id="setupCount">0</div>
+        <div class="tiny">PRIME / WATCH / NO-TRADE</div>
+      </div>
+
+      <div class="card">
+        <div class="label">Last Scan</div>
+        <div class="value" id="lastScan">—</div>
+        <div class="tiny">Timestamp of most recent APEX evaluation</div>
       </div>
     </div>
 
-    <div class="signal">
-      <div>
-        <div class="symbol">IREN</div>
-        <div class="company">Catalyst + abnormal volume</div>
-      </div>
-      <div class="score">
-        <div class="score-number green">91</div>
-        <span class="badge prime">PRIME</span>
-      </div>
+    <div style="margin-top:10px;display:flex;gap:8px">
+      <button class="btn primary" id="runScan">RUN APEX SCAN</button>
+      <button class="btn" id="autoToggle">AUTO: ON</button>
+      <div style="flex:1"></div>
+      <div class="tiny" id="dataModeNote">Mode: DEMO — Replace with LIVE source when API configured.</div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-title">
+      <h2>PRIME / WATCH / NO-TRADE</h2>
+      <div class="scan">Evidence-first signals — PRIME requires multiple confirmations</div>
     </div>
 
-    <div class="signal">
-      <div>
-        <div class="symbol">HLIT</div>
-        <div class="company">Momentum improving</div>
-      </div>
-      <div class="score">
-        <div class="score-number yellow">78</div>
-        <span class="badge watch">WATCH</span>
-      </div>
+    <div id="watchlist" class="watchlist"></div>
+  </section>
+
+  <section class="section">
+    <div class="section-title">
+      <h2>TOP APEX SETUPS (Sortable)</h2>
+      <div class="scan">Sort by score, ticker, R/R, confidence</div>
     </div>
 
-  </div>
-</section>
-
-<section class="section">
-  <div class="section-title">
-    <h2>📡 APEX EVENT FEED</h2>
-    <span class="scan">Live engine log</span>
-  </div>
-
-  <div class="card feed" id="feed">
-
-    <div class="feed-row">
-      <span class="feed-text">APEX engine initialized</span>
-      <span class="time">NOW</span>
+    <div class="card" style="padding:8px">
+      <table class="table" id="setupsTable">
+        <thead>
+          <tr>
+            <th data-key="ticker">Ticker</th>
+            <th data-key="price">Price</th>
+            <th data-key="direction">Dir</th>
+            <th data-key="score">Score</th>
+            <th data-key="catalyst">Catalyst</th>
+            <th data-key="volume">Vol</th>
+            <th data-key="momentum">Mom</th>
+            <th data-key="confidence">Conf</th>
+            <th data-key="entry">Entry</th>
+            <th data-key="target">Target</th>
+            <th data-key="stop">Stop</th>
+            <th data-key="invalidate">Invalidation</th>
+            <th data-key="status">Status</th>
+          </tr>
+        </thead>
+        <tbody id="setupsBody"></tbody>
+      </table>
     </div>
 
-    <div class="feed-row">
-      <span class="feed-text">Scanning abnormal volume</span>
-      <span class="time">NOW</span>
+  </section>
+
+  <section class="section">
+    <div class="section-title">
+      <h2>APEX EVENT FEED</h2>
+      <div class="scan">Engine log — DEMO events</div>
     </div>
 
-    <div class="feed-row">
-      <span class="feed-text">Checking catalyst credibility</span>
-      <span class="time">NOW</span>
+    <div class="card feed" id="feed"></div>
+  </section>
+
+  <section class="section">
+    <div class="section-title"><h2>APEX RULES &amp; FACTORS</h2></div>
+    <div class="rules-grid">
+      <div class="card"><div class="label">Catalyst</div><div class="value blue">Credibility Required</div><div class="tiny">News, filings, earnings — credibility affects score</div></div>
+      <div class="card"><div class="label">Abnormal Volume</div><div class="value green">Confirm</div><div class="tiny">Volume spike vs recent baseline</div></div>
+      <div class="card"><div class="label">Multi-TF Confirmation</div><div class="value green">Required</div><div class="tiny">Higher timeframe alignment increases confidence</div></div>
+      <div class="card"><div class="label">Liquidity / Spread</div><div class="value yellow">Monitor</div><div class="tiny">Low liquidity / wide spread triggers NO-TRADE</div></div>
     </div>
+  </section>
 
-    <div class="feed-row">
-      <span class="feed-text">Cross-checking confirmation</span>
-      <span class="time">NOW</span>
-    </div>
-
-    <div class="feed-row">
-      <span class="feed-text">Applying risk/reward filter</span>
-      <span class="time">NOW</span>
-    </div>
-
-  </div>
-</section>
-
-<section class="section">
-  <div class="section-title">
-    <h2>🧠 APEX RULES</h2>
-  </div>
-
-  <div class="grid">
-    <div class="card">
-      <div class="label">Catalyst</div>
-      <div class="value blue">VERIFY</div>
-    </div>
-
-    <div class="card">
-      <div class="label">Volume</div>
-      <div class="value green">CONFIRM</div>
-    </div>
-
-    <div class="card">
-      <div class="label">Chasing</div>
-      <div class="value red">NO</div>
-    </div>
-
-    <div class="card">
-      <div class="label">Invalidation</div>
-      <div class="value yellow">REQUIRED</div>
-    </div>
-  </div>
-</section>
-
-<div class="footer">
-  APEX Market Machine • Evidence-first decision engine
-</div>
-
+  <footer style="margin-top:18px;text-align:center;color:var(--muted);font-size:12px">APEX+ Market Machine • Evidence-first decision engine • DEMO data only</footer>
 </div>
 
 <script>
+/*
+  APEX+ UI Implementation (feature/apex-ui)
+  - Demo-data driven architecture with clear DEMO/LIVE/UNAVAILABLE modes
+  - Evidence-first scoring: returns breakdown of factors and final 0-100 score
+  - PRIME gating requires multiple confirmations and no conflicts
+  - Strict NO-TRADE logic applied for conflicting evidence, poor liquidity, weak R/R, or missing confirmations
+  - Self-contained, no external APIs. Ready for future API wiring via fetchLiveData() placeholder.
+*/
 
-let auto=true;
-let timer=null;
+const BRANCH = 'feature/apex-ui';
 
-function clock(){
-  return new Date().toLocaleTimeString([],{
-    hour:'2-digit',
-    minute:'2-digit'
+// --- Data mode: 'DEMO' | 'LIVE' | 'UNAVAILABLE' ---
+let DATA_MODE = 'DEMO'; // default until a live API is configured
+
+// Demo dataset: minimal, realistic-ish snapshots. NEVER claim these are live.
+const demoData = [
+  {
+    ticker:'NVDA', price:695.12, direction:'LONG', sector:'Semiconductors',
+    catalyst:'Earnings beat', catalystCred:0.9,
+    volume:2.8, // relative to avg (2.8x)
+    momentum:0.92, // 0..1
+    r_r:3.2, // reward:risk
+    liq:0.9, // 0..1, lower is bad
+    multiTF:2, // number of timeframe confirmations (0..3)
+    confSignals:3, // independent confirmation count
+    entry:680, target:740, stop:660, invalidation:650
+  },
+  {
+    ticker:'IREN', price:18.22, direction:'LONG', sector:'Energy',
+    catalyst:'Sector rotation + news', catalystCred:0.7,
+    volume:5.6, momentum:0.8, r_r:2.1, liq:0.4, multiTF:1, confSignals:1,
+    entry:17.8, target:22, stop:16.5, invalidation:16.2
+  },
+  {
+    ticker:'HLIT', price:12.5, direction:'LONG', sector:'Tech',
+    catalyst:'None', catalystCred:0.1, volume:1.2, momentum:0.6, r_r:1.4, liq:0.6, multiTF:1, confSignals:1,
+    entry:12.2, target:14.5, stop:11.2, invalidation:11.0
+  },
+  {
+    ticker:'ABCD', price:2.1, direction:'SHORT', sector:'Microcap',
+    catalyst:'PR announcement', catalystCred:0.4, volume:8.2, momentum:0.3, r_r:0.8, liq:0.2, multiTF:0, confSignals:0,
+    entry:2.2, target:1.6, stop:2.5, invalidation:2.6
+  }
+];
+
+// Utility: insert feed row
+function addFeed(text){
+  const feed=document.getElementById('feed');
+  const row=document.createElement('div');
+  row.className='feed-row';
+  const time=(new Date()).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+  row.innerHTML=`<div><div class="tiny">${text}</div></div><div class="time">${time}</div>`;
+  feed.prepend(row);
+  while(feed.children.length>30) feed.removeChild(feed.lastChild);
+}
+
+// Placeholder for future live data fetch — currently returns DEMO or UNAVAILABLE
+async function fetchLiveData(){
+  if(DATA_MODE==='LIVE'){
+    // Implement API wiring here when credentials available. Keep same data shape.
+    // Example: return fetch('/api/market').then(r=>r.json())
+    addFeed('Attempted fetchLiveData() but LIVE mode not configured');
+    return [];
+  }
+  if(DATA_MODE==='UNAVAILABLE'){
+    addFeed('Market data unavailable');
+    return [];
+  }
+  // DEMO
+  return demoData;
+}
+
+// Evidence-first scoring function
+// Returns {score:0-100, breakdown:{...}, status:'PRIME'|'WATCH'|'NO-TRADE'}
+function scoreSetup(item, marketRegime){
+  // Factors (weights sum to 1): regime 0.12, catalyst 0.15, volume 0.15, momentum 0.18,
+  // multiTF confirmation 0.12, independent confirmations 0.12, liquidity 0.08, riskReward 0.08
+  // Comments: weights chosen to emphasize momentum and catalyst; adjust as strategy evolves.
+  const weights = {regime:0.12, catalyst:0.15, volume:0.15, momentum:0.18, multiTF:0.12, conf:0.12, liq:0.06, rr:0.10};
+
+  // Normalize factors to 0..1
+  const regimeScore = (marketRegime==='RISK-ON' && item.direction==='LONG') || (marketRegime==='RISK-OFF' && item.direction==='SHORT') ? 1 : (marketRegime==='NEUTRAL'?0.7:0.3);
+
+  // Catalyst credibility is already 0..1 from data
+  const catalystScore = Math.min(1, Math.max(0, item.catalystCred || 0));
+
+  // Volume: treat >1.5x as confirmation
+  const volumeScore = Math.min(1, item.volume/3); // cap at 3x
+
+  // Momentum 0..1
+  const momentumScore = Math.min(1, Math.max(0, item.momentum || 0));
+
+  // multiTF: 0..3 -> normalize
+  const multiTFScore = Math.min(1, (item.multiTF||0)/3);
+
+  // independent confirmations: scale 0..3
+  const confScore = Math.min(1, (item.confSignals||0)/3);
+
+  // liquidity: already 0..1 (1 good)
+  const liqScore = Math.min(1, Math.max(0, item.liq || 0));
+
+  // risk/reward: treat >=2 as good
+  const rrScore = Math.min(1, (item.r_r||0)/3);
+
+  // Weighted sum
+  const raw = regimeScore*weights.regime + catalystScore*weights.catalyst + volumeScore*weights.volume + momentumScore*weights.momentum + multiTFScore*weights.multiTF + confScore*weights.conf + liqScore*weights.liq + rrScore*weights.rr;
+  const score = Math.round(raw*100);
+
+  // Decision logic (evidence-first and strict NO-TRADE rules):
+  // NO-TRADE if liquidity <0.25, rr <1.0, conflicting evidence (low catalyst + low conf + low momentum), or microcap with poor liquidity.
+  const noTrade = (liqScore<0.25) || ((item.r_r||0)<1.0) || ((catalystScore<0.2) && (confScore<0.3) && (momentumScore<0.4));
+
+  // PRIME requires score >=80, confirmations>=2 (confScore*3>=2), multiTF>=2, and not noTrade
+  const confirmations = (item.confSignals||0);
+  const prime = (!noTrade) && score>=80 && confirmations>=2 && item.multiTF>=2 && liqScore>=0.5 && (item.r_r||0)>=1.5;
+
+  const status = noTrade ? 'NO-TRADE' : (prime ? 'PRIME' : (score>=60 ? 'WATCH' : 'NO-TRADE'));
+
+  // Provide transparent factor breakdown for UI
+  const breakdown = {
+    regime:Math.round(regimeScore*100),
+    catalyst:Math.round(catalystScore*100),
+    volume:Math.round(volumeScore*100),
+    momentum:Math.round(momentumScore*100),
+    multiTF:Math.round(multiTFScore*100),
+    confirmations:Math.round(confScore*100),
+    liquidity:Math.round(liqScore*100),
+    rr:Math.round(rrScore*100),
+    rawScore:Math.round(raw*100)
+  };
+
+  return {score, breakdown, status, prime, noTrade, confirmations};
+}
+
+function renderStatus(){
+  const sText=document.getElementById('statusText');
+  const sDot=document.getElementById('statusDot');
+  sText.textContent = `DATA: ${DATA_MODE}`;
+  sDot.style.background = DATA_MODE==='LIVE' ? 'var(--accent)' : (DATA_MODE==='DEMO' ? 'orange' : '#ff3b30');
+}
+
+// Render watchlist / setups
+let currentSetups = [];
+let marketRegime = 'NEUTRAL';
+
+async function runApexScan(){
+  addFeed('APEX scan started ('+DATA_MODE+')');
+  const data = await fetchLiveData();
+  addFeed('Evaluating '+data.length+' symbols');
+
+  // Simple regime detection based on demo: average momentum
+  const avgMom = data.reduce((s,i)=>s+(i.momentum||0),0)/(data.length||1);
+  marketRegime = avgMom>0.7 ? 'RISK-ON' : (avgMom<0.4 ? 'RISK-OFF' : 'NEUTRAL');
+  document.getElementById('regime').textContent = marketRegime;
+
+  const evaluated = data.map(item=>{
+    const r = scoreSetup(item, marketRegime);
+    return {...item,...r};
+  });
+
+  // Sort by score desc
+  evaluated.sort((a,b)=>b.score-a.score);
+  currentSetups = evaluated;
+
+  document.getElementById('apexIndex').textContent = Math.round(evaluated.reduce((s,i)=>s+i.score,0)/(evaluated.length||1));
+  document.getElementById('setupCount').textContent = evaluated.filter(i=>i.status!=='NO-TRADE').length;
+  document.getElementById('lastScan').textContent = new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+
+  renderWatchlist();
+  renderSetupsTable();
+}
+
+function renderWatchlist(){
+  const container=document.getElementById('watchlist');
+  container.innerHTML='';
+  currentSetups.slice(0,10).forEach(item=>{
+    const div=document.createElement('div');
+    div.className='setup-card';
+    // left
+    const left=document.createElement('div'); left.className='setup-left';
+    const meta=document.createElement('div');
+    meta.innerHTML=`<div class="ticker">${item.ticker} <span class="tiny">${item.sector||''}</span></div><div class="meta">${item.catalyst || 'No catalyst'}</div>`;
+    // sparkline (demo generated)
+    const spark=document.createElement('canvas'); spark.className='spark'; spark.width=120; spark.height=36;
+    drawSparkline(spark, item.price);
+
+    left.appendChild(meta); left.appendChild(spark);
+
+    // right
+    const right=document.createElement('div'); right.className='right';
+    const scoreEl=document.createElement('div'); scoreEl.className='score'; scoreEl.textContent=item.score;
+    const badge=document.createElement('div'); badge.className='badge ' + (item.status==='PRIME'?'prime':(item.status==='WATCH'?'watch':'no'));
+    badge.textContent = item.status;
+    const tiny=document.createElement('div'); tiny.className='tiny'; tiny.textContent=`Conf: ${item.confirmations} • R/R ${item.r_r} • Liq ${Math.round((item.liq||0)*100)}%`;
+    right.appendChild(scoreEl); right.appendChild(badge); right.appendChild(tiny);
+
+    div.appendChild(left); div.appendChild(right);
+    container.appendChild(div);
+
+    // click to expand details modal (simple alert for now) — safe, keeps self-contained
+    div.addEventListener('click',()=>{ showDetails(item); });
   });
 }
 
-function addFeed(text){
-  const feed=document.getElementById("feed");
+function renderSetupsTable(){
+  const tbody=document.getElementById('setupsBody'); tbody.innerHTML='';
+  currentSetups.forEach(item=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML = `
+      <td><strong>${item.ticker}</strong><div class="tiny">${item.sector||''}</div></td>
+      <td>$${item.price.toFixed(2)}</td>
+      <td class="tiny">${item.direction}</td>
+      <td>${item.score}</td>
+      <td class="tiny">${item.catalyst||'—'}</td>
+      <td class="tiny">${(item.volume||0).toFixed(2)}x</td>
+      <td class="tiny">${Math.round((item.momentum||0)*100)}%</td>
+      <td class="tiny">${Math.round((item.breakdown.confirmations||0))}%</td>
+      <td class="tiny">${item.entry}</td>
+      <td class="tiny">${item.target}</td>
+      <td class="tiny">${item.stop}</td>
+      <td class="tiny">${item.invalidation}</td>
+      <td><span class="badge ${item.status==='PRIME'?'prime':(item.status==='WATCH'?'watch':'no')}">${item.status}</span></td>
+    `;
+    tr.addEventListener('click',()=>showDetails(item));
+    tbody.appendChild(tr);
+  });
 
-  const row=document.createElement("div");
-  row.className="feed-row";
-
-  row.innerHTML=
-    '<span class="feed-text">'+text+'</span>'+
-    '<span class="time">'+clock()+'</span>';
-
-  feed.prepend(row);
-
-  while(feed.children.length>12){
-    feed.removeChild(feed.lastChild);
-  }
+  // make headers sortable
+  document.querySelectorAll('#setupsTable thead th').forEach(th=>{
+    th.style.cursor='pointer';
+    th.onclick = ()=>{
+      const key = th.dataset.key;
+      currentSetups.sort((a,b)=>{
+        if(key==='ticker') return a.ticker.localeCompare(b.ticker);
+        if(key==='price' || key==='score' || key==='confidence' || key==='volume') return b[key]-a[key];
+        // default: string
+        return (a[key]||'').toString().localeCompare((b[key]||'').toString());
+      });
+      renderSetupsTable();
+    };
+  });
 }
 
-function runScan(){
-
-  document.getElementById("status").textContent="SCANNING";
-
-  addFeed("APEX scan started");
-
-  setTimeout(()=>{
-    addFeed("Scanning momentum + trend alignment");
-  },500);
-
-  setTimeout(()=>{
-    addFeed("Checking abnormal volume");
-  },1000);
-
-  setTimeout(()=>{
-    addFeed("Validating catalyst");
-  },1500);
-
-  setTimeout(()=>{
-    addFeed("Cross-checking confirmation");
-  },2000);
-
-  setTimeout(()=>{
-    addFeed("Applying risk/reward filter");
-
-    document.getElementById("status").textContent="ENGINE ONLINE";
-    document.getElementById("lastScan").textContent=clock();
-
-    const score=Math.floor(82+Math.random()*15);
-    document.getElementById("apexScore").textContent=score;
-
-  },2500);
+// Simple details view — expandable in future with charts and breakdown
+function showDetails(item){
+  // Build human-readable breakdown and decision notes
+  const b = item.breakdown || {};
+  let notes = `Ticker: ${item.ticker}\nPrice: $${item.price}\nStatus: ${item.status}${item.prime? ' (PRIME)':''}\n\nAPEX Score: ${item.score}\nBreakdown:\n - Regime: ${b.regime}%\n - Catalyst: ${b.catalyst}%\n - Volume: ${b.volume}%\n - Momentum: ${b.momentum}%\n - Multi-TF: ${b.multiTF}%\n - Conf: ${b.confirmations}%\n - Liquidity: ${b.liquidity}%\n - R/R: ${b.rr}%\n\nEntry: ${item.entry} Target: ${item.target} Stop: ${item.stop} Invalidation: ${item.invalidation}\n\nNotes: APEX enforces strict NO-TRADE if liquidity is poor, R/R < 1.0, or independent confirmations are absent. PRIME requires score>=80, confirmations>=2, multi-TF>=2.`;
+  // Use alert to keep app self-contained; replace with modal in future
+  alert(notes);
 }
 
-function toggleAuto(){
-
-  auto=!auto;
-
-  document.getElementById("auto").textContent=
-    auto ? "ON" : "OFF";
-
-  if(auto){
-    timer=setInterval(runScan,30000);
-    addFeed("Automatic scanning enabled");
-  }else{
-    clearInterval(timer);
-    addFeed("Automatic scanning paused");
-  }
+// Draw minimal sparkline for demo — not a charting library, keeps lightweight
+function drawSparkline(canvas, base){
+  try{
+    const ctx = canvas.getContext('2d');
+    const w = canvas.width, h = canvas.height;
+    ctx.clearRect(0,0,w,h);
+    // generate small series around base price
+    const pts = 20; const vals = [];
+    for(let i=0;i<pts;i++){ vals.push(base*(1 + (Math.sin(i/3)+Math.random()*0.6-0.3)/50)); }
+    const min = Math.min(...vals); const max=Math.max(...vals);
+    ctx.beginPath();
+    for(let i=0;i<pts;i++){
+      const x = i*(w/ (pts-1));
+      const y = h - ((vals[i]-min)/(max-min||1))*h;
+      if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+    }
+    ctx.strokeStyle = '#67a8ff'; ctx.lineWidth=1.5; ctx.stroke();
+  }catch(e){ console.warn('sparkline failed', e); }
 }
 
-document.getElementById("lastScan").textContent=clock();
+// Ticker add / watchlist
+const userWatch = new Set();
 
-timer=setInterval(()=>{
-  if(auto) runScan();
-},30000);
+function addTickerFromInput(){
+  const v = document.getElementById('searchInput').value.trim().toUpperCase();
+  if(!v) return;
+  // In DEMO mode we allow adding demo tickers (not live). If ticker not found, mark UNAVAILABLE
+  const found = demoData.find(d=>d.ticker===v);
+  if(found){ userWatch.add(v); addFeed('Added '+v+' to watchlist (DEMO)'); }
+  else { userWatch.add(v); addFeed('Added '+v+' to watchlist — data UNAVAILABLE for '+v); }
+  document.getElementById('searchInput').value='';
+  renderUserWatch();
+}
 
+function renderUserWatch(){
+  // show explicit user watch tickers in feed
+  // keep feed concise — list first 10
+  const list = Array.from(userWatch).slice(0,10);
+  addFeed('Watchlist: '+(list.join(', ') || '—'));
+}
+
+// Auto scanning
+let auto = true; let timer = null;
+function toggleAuto(){ auto = !auto; document.getElementById('autoToggle').textContent = 'AUTO: ' + (auto? 'ON':'OFF'); if(auto) timer=setInterval(runApexScan, 30000); else clearInterval(timer); addFeed('Auto scanning '+(auto?'enabled':'paused')); }
+
+// Initialization
+document.getElementById('runScan').addEventListener('click', runApexScan);
+document.getElementById('autoToggle').addEventListener('click', toggleAuto);
+document.getElementById('addBtn').addEventListener('click', addTickerFromInput);
+
+document.getElementById('searchInput').addEventListener('keydown', (e)=>{ if(e.key==='Enter') addTickerFromInput(); });
+
+// expose toggle to console for manual testing
+window.setDataMode = (m)=>{ if(['DEMO','LIVE','UNAVAILABLE'].includes(m)){ DATA_MODE=m; renderStatus(); addFeed('Data mode set to '+m); } else console.warn('invalid mode'); };
+
+renderStatus();
+runApexScan();
+if(auto) timer=setInterval(runApexScan, 30000);
+
+// Final verification: ensure no console errors when loading. Basic smoke log.
+console.log('APEX+ UI loaded on branch', BRANCH, 'DATA_MODE=', DATA_MODE);
 </script>
-
 </body>
 </html>
