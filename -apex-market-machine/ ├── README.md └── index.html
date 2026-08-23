@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>APEX+ Market Machine</title>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+margin:0;
+font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+background:#070b10;
+color:#f5f7fa;
+}
+
+.container{
+max-width:1100px;
+margin:auto;
+padding:22px;
+}
+
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:24px;
+}
+
+.logo{
+font-size:28px;
+font-weight:800;
+letter-spacing:-1px;
+}
+
+.logo span{color:#42e88a}
+
+.status{
+padding:8px 14px;
+border-radius:20px;
+background:#10281d;
+color:#42e88a;
+font-size:13px;
+font-weight:700;
+}
+
+.hero{
+background:linear-gradient(145deg,#111a24,#0b1118);
+border:1px solid #263341;
+border-radius:22px;
+padding:25px;
+margin-bottom:18px;
+}
+
+.hero h1{
+margin:0 0 8px;
+font-size:32px;
+}
+
+.hero p{
+margin:0;
+color:#8d9aaa;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:12px;
+margin-bottom:18px;
+}
+
+.card{
+background:#0e151d;
+border:1px solid #263341;
+border-radius:16px;
+padding:18px;
+}
+
+.label{
+font-size:12px;
+color:#8492a3;
+text-transform:uppercase;
+letter-spacing:1px;
+}
+
+.value{
+font-size:28px;
+font-weight:800;
+margin-top:7px;
+}
+
+.green{color:#42e88a}
+.yellow{color:#ffd166}
+.red{color:#ff5d73}
+
+.section{
+background:#0e151d;
+border:1px solid #263341;
+border-radius:18px;
+padding:20px;
+margin-bottom:18px;
+}
+
+.section h2{
+margin:0 0 16px;
+font-size:19px;
+}
+
+.signal{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px 0;
+border-bottom:1px solid #202b36;
+}
+
+.signal:last-child{border-bottom:0}
+
+.ticker{
+font-size:18px;
+font-weight:800;
+}
+
+.badge{
+padding:6px 10px;
+border-radius:8px;
+font-size:11px;
+font-weight:800;
+}
+
+.prime{
+background:#123923;
+color:#42e88a;
+}
+
+.watch{
+background:#382f16;
+color:#ffd166;
+}
+
+.no-trade{
+background:#3b1820;
+color:#ff5d73;
+}
+
+.score{
+font-weight:800;
+font-size:18px;
+}
+
+.metrics{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:12px;
+}
+
+.metric{
+background:#111a23;
+padding:14px;
+border-radius:12px;
+}
+
+.metric strong{
+display:block;
+font-size:20px;
+margin-top:5px;
+}
+
+button{
+width:100%;
+padding:15px;
+border:0;
+border-radius:12px;
+background:#42e88a;
+color:#06100a;
+font-size:16px;
+font-weight:800;
+margin-top:10px;
+}
+
+button:active{
+transform:scale(.98);
+}
+
+.footer{
+text-align:center;
+color:#647283;
+font-size:12px;
+padding:20px;
+}
+
+@media(max-width:750px){
+.grid{
+grid-template-columns:repeat(2,1fr);
+}
+
+.metrics{
+grid-template-columns:1fr 1fr;
+}
+
+.hero h1{
+font-size:26px;
+}
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+<div class="logo">APEX<span>+</span></div>
+<div class="status">● SYSTEM READY</div>
+</div>
+
+<div class="hero">
+<h1>APEX+ Market Machine</h1>
+<p>Evidence-first market intelligence • Regime aware • No-trade discipline</p>
+</div>
+
+<div class="grid">
+
+<div class="card">
+<div class="label">Market Regime</div>
+<div class="value green">BULLISH</div>
+</div>
+
+<div class="card">
+<div class="label">APEX Score</div>
+<div class="value">87</div>
+</div>
+
+<div class="card">
+<div class="label">Setups</div>
+<div class="value">3</div>
+</div>
+
+<div class="card">
+<div class="label">Risk Mode</div>
+<div class="value yellow">SELECTIVE</div>
+</div>
+
+</div>
+
+<div class="section">
+
+<h2>🔥 APEX Opportunity Board</h2>
+
+<div class="signal">
+<div>
+<div class="ticker">NVDA</div>
+<div class="label">Momentum + Catalyst + Volume</div>
+</div>
+<div class="score green">92</div>
+<div class="badge prime">PRIME</div>
+</div>
+
+<div class="signal">
+<div>
+<div class="ticker">AMAT</div>
+<div class="label">Trend confirmation developing</div>
+</div>
+<div class="score yellow">78</div>
+<div class="badge watch">WATCH</div>
+</div>
+
+<div class="signal">
+<div>
+<div class="ticker">IREN</div>
+<div class="label">High volatility / confirmation required</div>
+</div>
+<div class="score yellow">71</div>
+<div class="badge watch">WATCH</div>
+</div>
+
+</div>
+
+<div class="section">
+
+<h2>🧠 Evidence Engine</h2>
+
+<div class="metrics">
+
+<div class="metric">
+<div class="label">Catalyst</div>
+<strong class="green">CONFIRMED</strong>
+</div>
+
+<div class="metric">
+<div class="label">Volume</div>
+<strong class="green">ABNORMAL</strong>
+</div>
+
+<div class="metric">
+<div class="label">Trend</div>
+<strong class="green">ALIGNED</strong>
+</div>
+
+<div class="metric">
+<div class="label">Multi-Timeframe</div>
+<strong class="green">CONFIRMED</strong>
+</div>
+
+<div class="metric">
+<div class="label">Liquidity</div>
+<strong class="green">PASS</strong>
+</div>
+
+<div class="metric">
+<div class="label">Risk / Reward</div>
+<strong class="green">3.4 : 1</strong>
+</div>
+
+</div>
+
+</div>
+
+<div class="section">
+
+<h2>🛡️ APEX Decision Gate</h2>
+
+<p>
+<strong>PRIME requires:</strong>
+</p>
+
+<p>✓ Credible catalyst</p>
+<p>✓ Abnormal volume</p>
+<p>✓ Multi-timeframe confirmation</p>
+<p>✓ Independent data agreement</p>
+<p>✓ Acceptable liquidity/slippage</p>
+<p>✓ Positive risk/reward</p>
+<p>✓ Clear invalidation level</p>
+
+<button onclick="runScan()">RUN APEX SCAN</button>
+
+</div>
+
+<div class="section">
+
+<h2>🚫 NO-TRADE Protection</h2>
+
+<p>
+APEX will reject setups when evidence conflicts, momentum is already excessively extended,
+liquidity is poor, catalyst credibility is weak, or confirmation is missing.
+</p>
+
+<div class="badge no-trade">DISCIPLINE OVER FOMO</div>
+
+</div>
+
+<div class="footer">
+APEX+ Market Machine • Evidence First • Confirmation Before PRIME
+</div>
+
+</div>
+
+<script>
+
+function runScan(){
+
+const button=document.querySelector("button");
+
+button.innerText="SCANNING...";
+
+setTimeout(()=>{
+
+button.innerText="SCAN COMPLETE ✓";
+
+setTimeout(()=>{
+button.innerText="RUN APEX SCAN";
+},1800);
+
+},1200);
+
+}
+
+</script>
+
+</body>
+</html>
