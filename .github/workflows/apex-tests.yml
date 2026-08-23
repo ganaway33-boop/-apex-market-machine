@@ -3,6 +3,7 @@ name: APEX Headless Tests
 on:
   push:
     branches:
+      - main
       - feature/apex-ui
   pull_request:
     branches:
@@ -22,7 +23,7 @@ jobs:
           node-version: 18
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
       - name: Start static server
         run: npx http-server -p 8080 &
