@@ -23,7 +23,7 @@ jobs:
           node-version: 18
 
       - name: Install dependencies
-        run: npm ci
+        run: npm i stall
 
       - name: Start static server
         run: npx http-server -p 8080 &
