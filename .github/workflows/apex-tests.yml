@@ -3,6 +3,7 @@ name: APEX Headless Tests
 on:
   push:
     branches:
+      - main
       - feature/apex-ui
   pull_request:
     branches:
