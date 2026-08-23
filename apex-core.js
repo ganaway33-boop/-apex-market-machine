@@ -11,7 +11,7 @@
    - All decisions are explainable and returned in evaluation results
    - Robust error handling and input validation
 */
-(function(window){
+(function(global){
   'use strict';
 
   const DEFAULT_HISTORY = 50;
@@ -30,10 +30,10 @@
 
   // Demo dataset (same shape as UI expects)
   const demoData = [
-    {ticker:'NVDA', price:695.12, direction:'LONG', sector:'Semiconductors', catalyst:'Earnings beat', catalystCred:0.9, volume:2.8, momentum:0.92, r_r:3.2, liq:0.9, multiTF:2, confSignals:3, entry:680, target:740, stop:660, invalidation:650},
-    {ticker:'IREN', price:18.22, direction:'LONG', sector:'Energy', catalyst:'Sector rotation + news', catalystCred:0.7, volume:5.6, momentum:0.8, r_r:2.1, liq:0.4, multiTF:1, confSignals:1, entry:17.8, target:22, stop:16.5, invalidation:16.2},
-    {ticker:'HLIT', price:12.5, direction:'LONG', sector:'Tech', catalyst:'None', catalystCred:0.1, volume:1.2, momentum:0.6, r_r:1.4, liq:0.6, multiTF:1, confSignals:1, entry:12.2, target:14.5, stop:11.2, invalidation:11.0},
-    {ticker:'ABCD', price:2.1, direction:'SHORT', sector:'Microcap', catalyst:'PR announcement', catalystCred:0.4, volume:8.2, momentum:0.3, r_r:0.8, liq:0.2, multiTF:0, confSignals:0, entry:2.2, target:1.6, stop:2.5, invalidation:2.6}
+    {ticker:'NVDA', price:695.12, direction:'LONG', sector:'Semiconductors', catalyst:'Earnings beat', catalystCred:0.9, volume:2.8, momentum:0.92, r_r:3.2, liq:0.9, multiTF:2, confSignals:3, entry:680, target:750, stop:665, invalidation:655},
+    {ticker:'IREN', price:18.22, direction:'LONG', sector:'Energy', catalyst:'Sector rotation + news', catalystCred:0.7, volume:5.6, momentum:0.8, r_r:2.1, liq:0.4, multiTF:1, confSignals:1, entry:18, target:21, stop:17, invalidation:16},
+    {ticker:'HLIT', price:12.5, direction:'LONG', sector:'Tech', catalyst:'None', catalystCred:0.1, volume:1.2, momentum:0.6, r_r:1.4, liq:0.6, multiTF:1, confSignals:1, entry:12.2, target:14.5, stop:11.5, invalidation:11},
+    {ticker:'ABCD', price:2.1, direction:'SHORT', sector:'Microcap', catalyst:'PR announcement', catalystCred:0.4, volume:8.2, momentum:0.3, r_r:0.8, liq:0.2, multiTF:0, confSignals:0, entry:2.2, target:1.5, stop:2.5, invalidation:2.8}
   ];
 
   // Utility safe number
@@ -274,6 +274,6 @@
   apex.getEvents = function(){ return apex._events.slice(); };
 
   // expose to global
-  window.apexCore = apex;
+  global.apexCore = apex;
 
-})(window);
+})(typeof window !== 'undefined' ? window : globalThis);
