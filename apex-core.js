@@ -183,12 +183,12 @@
     if(!prev) return 'NEW';
     // if previous was PRIME and now NO-TRADE -> INVALIDATED
     if(prev.status === 'PRIME' && current.status === 'NO-TRADE') return 'INVALIDATED';
-    // score change thresholds
+    if(current.status === 'PRIME' && prev.status !== 'PRIME') return 'CONFIRMED';
     const delta = current.score - (prev.score || 0);
     if(delta >= 8 && (current.status === prev.status || current.status === 'PRIME')) return 'IMPROVING';
     if(delta <= -8) return 'DETERIORATING';
     if(current.status === prev.status && Math.abs(delta) < 5) return 'UNCHANGED';
-    if(current.status === 'PRIME' && prev.status !== 'PRIME') return 'CONFIRMED';
+    
     return 'UNCHANGED';
   }
 
