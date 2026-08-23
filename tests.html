@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>APEX+ Tests</title>
-  <style>body{font-family:system-ui,Segoe UI,Roboto,Arial;background:#07121a;color:#e7eef8;padding:18px} .pass{color:#57e389} .fail{color:#ff6b6b} pre{background:#061019;padding:12px;border-radius:8px;overflow:auto}</style>
+  <style>body{font-family:system-ui,Segoe UI,Roboto,Arial;background:#07121a;color:#e7eef8;padding:18px} .pass{color:#57e389} .fail{color:#ff6b6b} pre{background:#061019;padding:12px;border-radius:8px;overflow:auto;white-space:pre-wrap}</style>
 </head>
 <body>
   <h1>APEX+ Test Suite (feature/apex-ui)</h1>
@@ -17,7 +17,8 @@
       function log(...args){ console.log(...args); logEl.textContent += args.join(' ') + '\n'; }
 
       const resultsEl = document.getElementById('results');
-      function addResult(name, ok, msg){ const d=document.createElement('div'); d.innerHTML = `${name}: <strong class="${ok? 'pass':'fail'}">${ok? 'PASS':'FAIL'}</strong> ${msg? ' - '+msg : ''}`; resultsEl.appendChild(d); }
+      const SUMMARY = [];
+      function addResult(name, ok, msg){ SUMMARY.push({name, ok, msg}); const d=document.createElement('div'); d.innerHTML = `${name}: <strong class="${ok? 'pass':'fail'}">${ok? 'PASS':'FAIL'}</strong> ${msg? ' - '+msg : ''}`; resultsEl.appendChild(d); }
 
       try{
         if(!window.apexCore) throw new Error('apexCore not loaded');
@@ -52,7 +53,6 @@
         addResult('NO-TRADE override (ABCD)', abcdOk, abcd ? ('status='+abcd.status+', reasons='+ (abcd.noTradeReasons||[]).join(';')) : 'ABCD not found');
 
         // Test 5: cycle-state CONFIRMED when prior snapshot non-PRIME -> now PRIME
-        // Seed prior snapshot for NVDA with status WATCH and lower score
         const priorNVDA = Object.assign({}, nvda, {score:70, status:'WATCH', timestamp: new Date(Date.now()-3600*1000).toISOString()});
         localStorage.setItem('apex_history_NVDA', JSON.stringify([priorNVDA]));
         log('seeded NVDA prior snapshot');
@@ -62,7 +62,6 @@
         addResult('Cycle-state CONFIRMED (NVDA)', confirmedOk, nvda2 ? ('cycleState='+nvda2.cycleState) : 'NVDA not found after seeded run');
 
         // Test 6: cycle-state INVALIDATED when prior snapshot PRIME then current NO-TRADE (ABCD)
-        // Seed prior snapshot for ABCD as PRIME
         const priorABCD = Object.assign({}, abcd, {score:85, status:'PRIME', timestamp: new Date(Date.now()-3600*1000).toISOString()});
         localStorage.setItem('apex_history_ABCD', JSON.stringify([priorABCD]));
         log('seeded ABCD prior PRIME snapshot');
@@ -76,16 +75,18 @@
         core.setDataMode('UNAVAILABLE');
         const after = core.DATA_MODE === 'UNAVAILABLE';
         core.setDataMode('DEMO');
-        addResult('Data mode switchable', initialMode && after, 'initial:'+core.DATA_MODE+' after:'+ (after?'UNAVAILABLE':'not') );
+        addResult('Data mode switchable', initialMode && after, 'initial:DEMO after:UNAVAILABLE');
 
         // Test 8: PRIME cannot trigger when NO-TRADE exists
-        // Seed prior ABCD as PRIME and ensure current is NO-TRADE; we already observed abcd2.status === 'NO-TRADE'
         const primeBlocked = abcd2 && abcd2.status !== 'PRIME';
         addResult('PRIME blocked by NO-TRADE', primeBlocked, abcd2 ? ('status='+abcd2.status) : 'ABCD missing');
 
-        // Aggregate result
-        log('tests complete');
-      }catch(err){ addResult('Test harness', false, 'Uncaught error: '+err.message); log('uncaught', err); }
+        // Collate
+        window.TEST_SUMMARY = SUMMARY;
+        window.TEST_PASSED = SUMMARY.every(s=>s.ok);
+        log('TEST_PASS=', window.TEST_PASSED);
+      }catch(err){ addResult('Test harness', false, 'Uncaught error: '+err.message); log('uncaught', err); window.TEST_PASSED=false; }
+      finally{ window.TEST_COMPLETE = true; }
     })();
   </script>
 </body>
