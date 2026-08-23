@@ -1,472 +1,318 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#070b12">
-<title>APEX Market Machine</title>
-
+<title>APEX+ Market Machine</title>
 <style>
+:root{--bg:#070b12;--card:#0d141f;--muted:#7f8da0;--accent:#35e59a;--accent-2:#67a8ff;--warn:#ffd166;--danger:#ff6678}
 *{box-sizing:border-box}
-body{
-  margin:0;
-  background:#070b12;
-  color:#f4f7fb;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-}
-.app{
-  max-width:1200px;
-  margin:auto;
-  padding:18px;
-}
-header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:15px;
-  margin-bottom:20px;
-}
-.logo{
-  font-size:25px;
-  font-weight:900;
-  letter-spacing:.5px;
-}
-.logo span{color:#35e59a}
-.status{
-  display:flex;
-  align-items:center;
-  gap:7px;
-  font-size:12px;
-  color:#8c99aa;
-}
-.dot{
-  width:9px;
-  height:9px;
-  border-radius:50%;
-  background:#35e59a;
-  box-shadow:0 0 12px #35e59a;
-}
-.hero{
-  background:linear-gradient(145deg,#101927,#0b111c);
-  border:1px solid #1d2a3b;
-  border-radius:22px;
-  padding:22px;
-  margin-bottom:16px;
-}
-.eyebrow{
-  color:#7e8da2;
-  font-size:11px;
-  font-weight:800;
-  letter-spacing:1.5px;
-}
-h1{
-  margin:7px 0 8px;
-  font-size:30px;
-}
-.subtitle{
-  color:#8e9bad;
-  font-size:14px;
-  line-height:1.5;
-}
-.grid{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:12px;
-  margin-top:20px;
-}
-.card{
-  background:#0d141f;
-  border:1px solid #1b2838;
-  border-radius:17px;
-  padding:16px;
-}
-.label{
-  color:#7f8da0;
-  font-size:11px;
-  font-weight:700;
-  text-transform:uppercase;
-  letter-spacing:1px;
-}
-.value{
-  margin-top:7px;
-  font-size:23px;
-  font-weight:850;
-}
-.green{color:#35e59a}
-.yellow{color:#ffd166}
-.red{color:#ff6678}
-.blue{color:#67a8ff}
-
-.section{
-  margin-top:18px;
-}
-.section-title{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:10px;
-}
-.section-title h2{
-  font-size:17px;
-  margin:0;
-}
-.scan{
-  color:#7f8da0;
-  font-size:12px;
-}
-
-.signal{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:12px;
-  background:#0d141f;
-  border:1px solid #1b2838;
-  border-radius:17px;
-  padding:16px;
-  margin-bottom:10px;
-}
-.symbol{
-  font-size:18px;
-  font-weight:850;
-}
-.company{
-  color:#7f8da0;
-  font-size:12px;
-  margin-top:3px;
-}
-.score{
-  text-align:right;
-}
-.score-number{
-  font-size:22px;
-  font-weight:900;
-}
-.badge{
-  display:inline-block;
-  margin-top:4px;
-  padding:4px 8px;
-  border-radius:8px;
-  font-size:10px;
-  font-weight:900;
-  letter-spacing:.5px;
-  background:#162338;
-  color:#67a8ff;
-}
-.badge.prime{
-  background:#123b2b;
-  color:#35e59a;
-}
-.badge.watch{
-  background:#3b3013;
-  color:#ffd166;
-}
-
-.feed{
-  max-height:310px;
-  overflow:auto;
-}
-.feed-row{
-  display:flex;
-  justify-content:space-between;
-  gap:10px;
-  padding:12px 0;
-  border-bottom:1px solid #172231;
-  font-size:13px;
-}
-.feed-row:last-child{border-bottom:0}
-.time{color:#627086;font-size:11px}
-.feed-text{color:#b9c4d3}
-
-.controls{
-  display:flex;
-  gap:9px;
-  flex-wrap:wrap;
-  margin-top:15px;
-}
-button{
-  border:1px solid #26364a;
-  background:#111b29;
-  color:#eaf0f7;
-  border-radius:12px;
-  padding:11px 14px;
-  font-weight:750;
-  cursor:pointer;
-}
-button.primary{
-  background:#35e59a;
-  color:#06110c;
-  border-color:#35e59a;
-}
-button:active{transform:scale(.98)}
-
-.footer{
-  text-align:center;
-  color:#59677b;
-  font-size:11px;
-  padding:25px 0 10px;
-}
-
-@media(max-width:800px){
-  .grid{grid-template-columns:repeat(2,1fr)}
-}
-@media(max-width:480px){
-  .app{padding:13px}
-  h1{font-size:25px}
-  .grid{gap:9px}
-  .card{padding:13px}
-  .value{font-size:20px}
-}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:#e7eef8;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,Arial,sans-serif}
+.app{max-width:1200px;margin:18px auto;padding:12px}
+header{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}
+.logo{font-size:20px;font-weight:900}.logo span{color:var(--accent)}
+.status{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:12px}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent)}
+.input{background:transparent;border:1px solid #223144;padding:8px 10px;border-radius:10px;color:inherit}
+.btn{border:1px solid #223144;background:transparent;color:inherit;padding:8px 10px;border-radius:10px;cursor:pointer}
+.btn.primary{background:var(--accent);color:#03120b;border-color:var(--accent)}
+.hero{background:linear-gradient(145deg,#0f1720,#071019);border:1px solid #1b2a3a;border-radius:12px;padding:12px;margin-bottom:12px}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:10px}
+.card{background:var(--card);border:1px solid #102233;border-radius:10px;padding:10px}
+.label{color:var(--muted);font-size:11px}
+.value{margin-top:6px;font-weight:900;font-size:18px}
+.section{margin-top:12px}
+.section-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.watchlist{display:flex;flex-direction:column;gap:8px}
+.setup-card{display:flex;justify-content:space-between;gap:12px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);border:1px solid #142433;border-radius:10px;padding:10px}
+.setup-left{display:flex;gap:10px;align-items:center}
+.ticker{font-weight:900}
+.meta{color:var(--muted);font-size:12px}
+.right{display:flex;flex-direction:column;align-items:flex-end}
+.score{font-weight:900}
+.badge{padding:4px 8px;border-radius:8px;font-weight:700;font-size:12px}
+.badge.prime{background:#083a26;color:var(--accent)}.badge.watch{background:#3b3013;color:var(--warn)}.badge.no{background:#2b1218;color:var(--danger)}
+.table{width:100%;border-collapse:collapse;margin-top:8px}
+.table th{background:#07151f;color:var(--muted);font-size:12px;padding:8px;text-align:left;border-bottom:1px solid #112233}
+.table td{padding:8px;border-bottom:1px solid #0f1b28}
+.tiny{font-size:12px;color:var(--muted)}
+.feed{max-height:240px;overflow:auto;padding:8px}
+.feed-row{display:flex;justify-content:space-between;gap:10px;padding:8px;border-bottom:1px solid #0f1b28}
+.spark{width:120px;height:36px}
+/* slide-over modal */
+.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.45);display:none}
+.modal{position:fixed;right:0;top:0;height:100%;width:100%;max-width:520px;background:#07121a;border-left:1px solid #16242f;padding:16px;transform:translateX(100%);transition:transform .22s ease}
+.modal.open{transform:translateX(0)}
+.modal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.progress{height:12px;background:#0b1a24;border-radius:8px;overflow:hidden}
+.progress > i{display:block;height:100%;background:linear-gradient(90deg,var(--accent-2),var(--accent));width:0}
+.factor-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #0f1b28}
+.factor-name{color:var(--muted)}
+.factor-value{font-weight:800}
+.state-pill{padding:4px 8px;border-radius:8px;font-weight:800}
+/* responsive */
+@media(max-width:800px){.cards{grid-template-columns:repeat(2,1fr)}.table{font-size:13px}}
+@media(max-width:520px){.cards{grid-template-columns:1fr}.modal{max-width:100%}}
 </style>
 </head>
-
 <body>
 <div class="app">
+  <header>
+    <div class="logo">APEX<span>+</span> Market Machine</div>
+    <div style="display:flex;gap:12px;align-items:center">
+      <div class="status" id="dataStatus"><div class="dot" id="statusDot"></div><div id="statusText">DATA: DEMO</div></div>
+      <input id="searchInput" class="input" placeholder="Add ticker (AAPL)" />
+      <button class="btn" id="addBtn">Add</button>
+    </div>
+  </header>
 
-<header>
-  <div class="logo">APEX<span>+</span></div>
-  <div class="status">
-    <span class="dot"></span>
-    <span id="status">ENGINE ONLINE</span>
-  </div>
-</header>
+  <section class="hero">
+    <div class="eyebrow">MARKET MACHINE — APEX+</div>
+    <div class="h1">Evidence First. No Chase.</div>
+    <div class="subtitle tiny">DEMO DATA — Not live market data. Use window.setDataMode('LIVE') after wiring a real adapter.</div>
 
-<section class="hero">
-  <div class="eyebrow">MARKET MACHINE</div>
-  <h1>Evidence First. No Chase.</h1>
-  <div class="subtitle">
-    APEX scans momentum, volume, catalysts, confirmation,
-    liquidity and risk/reward before promoting a setup.
-  </div>
-
-  <div class="grid">
-    <div class="card">
-      <div class="label">APEX Score</div>
-      <div class="value green" id="apexScore">87</div>
+    <div class="cards">
+      <div class="card"><div class="label">APEX Index</div><div class="value green" id="apexIndex">—</div><div class="tiny">Market intelligence (0–100)</div></div>
+      <div class="card"><div class="label">Market Regime</div><div class="value blue" id="regime">—</div><div class="tiny">Risk-On / Neutral / Risk-Off</div></div>
+      <div class="card"><div class="label">Open Setups</div><div class="value" id="setupCount">0</div><div class="tiny">PRIME / WATCH / NO-TRADE</div></div>
+      <div class="card"><div class="label">Last Scan</div><div class="value" id="lastScan">—</div><div class="tiny">Timestamp</div></div>
     </div>
 
-    <div class="card">
-      <div class="label">Market Regime</div>
-      <div class="value blue" id="regime">RISK-ON</div>
+    <div style="margin-top:10px;display:flex;gap:8px;align-items:center">
+      <button class="btn primary" id="runScan">RUN APEX SCAN</button>
+      <button class="btn" id="autoToggle">AUTO: ON</button>
+      <label style="margin-left:8px" class="tiny">Debug <input type="checkbox" id="debugToggle"/></label>
+      <div style="flex:1"></div>
+      <div class="tiny" id="dataModeNote">Mode: DEMO — Replace with LIVE source when API configured.</div>
     </div>
+  </section>
 
-    <div class="card">
-      <div class="label">Setups</div>
-      <div class="value" id="setupCount">3</div>
+  <section class="section">
+    <div class="section-title"><h2>PRIME / WATCH / NO-TRADE</h2><div class="scan tiny">Evidence-first signals — PRIME requires confirmations</div></div>
+    <div id="watchlist" class="watchlist"></div>
+  </section>
+
+  <section class="section">
+    <div class="section-title"><h2>TOP APEX SETUPS (Sortable)</h2><div class="scan tiny">Tap a row to open setup details</div></div>
+    <div class="card" style="padding:8px">
+      <table class="table" id="setupsTable">
+        <thead><tr>
+          <th data-key="ticker">Ticker</th><th data-key="price">Price</th><th data-key="direction">Dir</th><th data-key="score">Score</th>
+          <th data-key="catalyst">Catalyst</th><th data-key="volume">Vol</th><th data-key="momentum">Mom</th>
+          <th data-key="confirmations">Conf</th><th data-key="entry">Entry</th><th data-key="target">Target</th>
+          <th data-key="stop">Stop</th><th data-key="invalidation">Invalidation</th><th data-key="status">Status</th>
+        </tr></thead>
+        <tbody id="setupsBody"></tbody>
+      </table>
     </div>
+  </section>
 
-    <div class="card">
-      <div class="label">Last Scan</div>
-      <div class="value" id="lastScan">--:--</div>
-    </div>
-  </div>
+  <section class="section">
+    <div class="section-title"><h2>APEX EVENT FEED</h2><div class="scan tiny">Engine log</div></div>
+    <div class="card feed" id="feed"></div>
+  </section>
 
-  <div class="controls">
-    <button class="primary" onclick="runScan()">RUN APEX SCAN</button>
-    <button onclick="toggleAuto()">AUTO: <span id="auto">ON</span></button>
-  </div>
-</section>
+  <section class="section">
+    <div class="section-title"><h2>APEX RULES & FACTORS</h2></div>
+    <div class="card rules"><div class="tiny">Catalyst, volume, momentum, multi-timeframe confirmation, liquidity and risk/reward are all considered. PRIME requires multiple independent confirmations and multi-TF alignment. NO-TRADE overrides when liquidity or R/R are unacceptable.</div></div>
+  </section>
 
-<section class="section">
-  <div class="section-title">
-    <h2>🔥 PRIME WATCHLIST</h2>
-    <span class="scan">Highest conviction</span>
-  </div>
-
-  <div id="signals">
-
-    <div class="signal">
-      <div>
-        <div class="symbol">NVDA</div>
-        <div class="company">Momentum + volume confirmation</div>
-      </div>
-      <div class="score">
-        <div class="score-number green">94</div>
-        <span class="badge prime">PRIME</span>
-      </div>
-    </div>
-
-    <div class="signal">
-      <div>
-        <div class="symbol">IREN</div>
-        <div class="company">Catalyst + abnormal volume</div>
-      </div>
-      <div class="score">
-        <div class="score-number green">91</div>
-        <span class="badge prime">PRIME</span>
-      </div>
-    </div>
-
-    <div class="signal">
-      <div>
-        <div class="symbol">HLIT</div>
-        <div class="company">Momentum improving</div>
-      </div>
-      <div class="score">
-        <div class="score-number yellow">78</div>
-        <span class="badge watch">WATCH</span>
-      </div>
-    </div>
-
-  </div>
-</section>
-
-<section class="section">
-  <div class="section-title">
-    <h2>📡 APEX EVENT FEED</h2>
-    <span class="scan">Live engine log</span>
-  </div>
-
-  <div class="card feed" id="feed">
-
-    <div class="feed-row">
-      <span class="feed-text">APEX engine initialized</span>
-      <span class="time">NOW</span>
-    </div>
-
-    <div class="feed-row">
-      <span class="feed-text">Scanning abnormal volume</span>
-      <span class="time">NOW</span>
-    </div>
-
-    <div class="feed-row">
-      <span class="feed-text">Checking catalyst credibility</span>
-      <span class="time">NOW</span>
-    </div>
-
-    <div class="feed-row">
-      <span class="feed-text">Cross-checking confirmation</span>
-      <span class="time">NOW</span>
-    </div>
-
-    <div class="feed-row">
-      <span class="feed-text">Applying risk/reward filter</span>
-      <span class="time">NOW</span>
-    </div>
-
-  </div>
-</section>
-
-<section class="section">
-  <div class="section-title">
-    <h2>🧠 APEX RULES</h2>
-  </div>
-
-  <div class="grid">
-    <div class="card">
-      <div class="label">Catalyst</div>
-      <div class="value blue">VERIFY</div>
-    </div>
-
-    <div class="card">
-      <div class="label">Volume</div>
-      <div class="value green">CONFIRM</div>
-    </div>
-
-    <div class="card">
-      <div class="label">Chasing</div>
-      <div class="value red">NO</div>
-    </div>
-
-    <div class="card">
-      <div class="label">Invalidation</div>
-      <div class="value yellow">REQUIRED</div>
-    </div>
-  </div>
-</section>
-
-<div class="footer">
-  APEX Market Machine • Evidence-first decision engine
+  <footer style="margin-top:12px;text-align:center;color:var(--muted);font-size:12px">APEX+ Market Machine • DEMO data only</footer>
 </div>
 
+<!-- modal slide-over -->
+<div class="modal-backdrop" id="modalBackdrop"></div>
+<div class="modal" id="detailModal" aria-hidden="true">
+  <div class="modal-header"><div><div id="modalTicker" style="font-weight:900;font-size:18px"></div><div class="tiny" id="modalStatus"></div></div><div><button class="btn" id="closeModal">Close</button></div></div>
+  <div style="margin-bottom:10px"><div class="tiny">APEX Score</div><div style="display:flex;gap:8px;align-items:center"><div style="width:60%;"><div class="progress"><i id="modalProgress" style="width:0%"></i></div></div><div id="modalScore" style="font-weight:900"></div></div></div>
+  <div id="modalBreakdown"></div>
+  <div style="margin-top:10px"><div class="tiny">Entry / Target / Stop / Invalidation</div><div id="modalLevels" class="tiny"></div></div>
+  <div style="margin-top:10px"><div class="tiny">Cycle History</div><div id="modalHistory" class="tiny"></div></div>
 </div>
 
+<script src="apex-core.js"></script>
 <script>
+(function(){
+  // UI binding to apexCore
+  const core = window.apexCore;
+  if(!core) { console.error('apexCore not loaded'); }
 
-let auto=true;
-let timer=null;
+  // Init
+  core.init({historyLength:50, debug:false, dataMode:'DEMO'});
 
-function clock(){
-  return new Date().toLocaleTimeString([],{
-    hour:'2-digit',
-    minute:'2-digit'
+  // DOM refs
+  const statusText = document.getElementById('statusText');
+  const statusDot = document.getElementById('statusDot');
+  const apexIndex = document.getElementById('apexIndex');
+  const regimeEl = document.getElementById('regime');
+  const setupCount = document.getElementById('setupCount');
+  const lastScan = document.getElementById('lastScan');
+  const feed = document.getElementById('feed');
+  const watchlist = document.getElementById('watchlist');
+  const setupsBody = document.getElementById('setupsBody');
+  const runScanBtn = document.getElementById('runScan');
+  const autoToggle = document.getElementById('autoToggle');
+  const addBtn = document.getElementById('addBtn');
+  const searchInput = document.getElementById('searchInput');
+  const debugToggle = document.getElementById('debugToggle');
+
+  const modalBackdrop = document.getElementById('modalBackdrop');
+  const modal = document.getElementById('detailModal');
+  const closeModal = document.getElementById('closeModal');
+  const modalTicker = document.getElementById('modalTicker');
+  const modalScore = document.getElementById('modalScore');
+  const modalProgress = document.getElementById('modalProgress');
+  const modalBreakdown = document.getElementById('modalBreakdown');
+  const modalLevels = document.getElementById('modalLevels');
+  const modalHistory = document.getElementById('modalHistory');
+  const modalStatus = document.getElementById('modalStatus');
+
+  let auto = true; let timer = null;
+
+  function renderStatus(){
+    statusText.textContent = 'DATA: ' + core.DATA_MODE;
+    statusDot.style.background = core.DATA_MODE === 'LIVE' ? 'var(--accent)' : (core.DATA_MODE === 'DEMO' ? 'orange' : '#ff3b30');
+  }
+
+  function addFeed(text){
+    try{
+      const row = document.createElement('div'); row.className='feed-row';
+      const time = new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+      row.innerHTML = `<div class="tiny">${text}</div><div class="tiny">${time}</div>`;
+      feed.prepend(row);
+      while(feed.children.length>40) feed.removeChild(feed.lastChild);
+    }catch(e){console.warn('addFeed error', e);}    
+  }
+
+  core.on('feed', ev => { if(ev && ev.text) addFeed(ev.text); });
+
+  // handle core update event
+  core.on('update', data => {
+    try{
+      const setups = data.setups || core.getCurrentSetups();
+      regimeEl.textContent = data.regime || core.marketRegime || '—';
+      // apex index = average score
+      const avg = Math.round((setups.reduce((s,i)=>s+i.score,0)/(setups.length||1))||0);
+      apexIndex.textContent = avg;
+      setupCount.textContent = setups.filter(i=>i.status!=='NO-TRADE').length;
+      lastScan.textContent = new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+      renderWatchlistUI(setups);
+      renderSetupsTable(setups);
+    }catch(e){console.error('update handler error', e);}  
   });
-}
 
-function addFeed(text){
-  const feed=document.getElementById("feed");
-
-  const row=document.createElement("div");
-  row.className="feed-row";
-
-  row.innerHTML=
-    '<span class="feed-text">'+text+'</span>'+
-    '<span class="time">'+clock()+'</span>';
-
-  feed.prepend(row);
-
-  while(feed.children.length>12){
-    feed.removeChild(feed.lastChild);
+  function renderWatchlistUI(setups){
+    try{
+      watchlist.innerHTML='';
+      setups.slice(0,8).forEach(item=>{
+        const div=document.createElement('div'); div.className='setup-card';
+        const left=document.createElement('div'); left.className='setup-left';
+        const meta=document.createElement('div'); meta.innerHTML=`<div class="ticker">${item.ticker}</div><div class="meta">${item.catalyst || 'No catalyst'}</div>`;
+        const spark=document.createElement('canvas'); spark.className='spark'; spark.width=120; spark.height=36; drawSparkline(spark, item.price);
+        left.appendChild(meta); left.appendChild(spark);
+        const right=document.createElement('div'); right.className='right';
+        const score=document.createElement('div'); score.className='score'; score.textContent=item.score;
+        const badge=document.createElement('div'); badge.className='badge ' + (item.status==='PRIME'?'prime':(item.status==='WATCH'?'watch':'no')); badge.textContent=item.status;
+        const tiny=document.createElement('div'); tiny.className='tiny'; tiny.textContent=`Conf:${item.confirmations} R/R:${item.r_r} Liq:${Math.round((item.liq||0)*100)}%`;
+        const state=document.createElement('div'); state.className='tiny'; state.textContent=item.cycleState || '';
+        right.appendChild(score); right.appendChild(badge); right.appendChild(tiny); right.appendChild(state);
+        div.appendChild(left); div.appendChild(right);
+        div.addEventListener('click', ()=>openModal(item));
+        watchlist.appendChild(div);
+      });
+    }catch(e){console.error('renderWatchlistUI', e);}  
   }
-}
 
-function runScan(){
-
-  document.getElementById("status").textContent="SCANNING";
-
-  addFeed("APEX scan started");
-
-  setTimeout(()=>{
-    addFeed("Scanning momentum + trend alignment");
-  },500);
-
-  setTimeout(()=>{
-    addFeed("Checking abnormal volume");
-  },1000);
-
-  setTimeout(()=>{
-    addFeed("Validating catalyst");
-  },1500);
-
-  setTimeout(()=>{
-    addFeed("Cross-checking confirmation");
-  },2000);
-
-  setTimeout(()=>{
-    addFeed("Applying risk/reward filter");
-
-    document.getElementById("status").textContent="ENGINE ONLINE";
-    document.getElementById("lastScan").textContent=clock();
-
-    const score=Math.floor(82+Math.random()*15);
-    document.getElementById("apexScore").textContent=score;
-
-  },2500);
-}
-
-function toggleAuto(){
-
-  auto=!auto;
-
-  document.getElementById("auto").textContent=
-    auto ? "ON" : "OFF";
-
-  if(auto){
-    timer=setInterval(runScan,30000);
-    addFeed("Automatic scanning enabled");
-  }else{
-    clearInterval(timer);
-    addFeed("Automatic scanning paused");
+  function renderSetupsTable(setups){
+    try{
+      setupsBody.innerHTML='';
+      setups.forEach(item=>{
+        const tr=document.createElement('tr');
+        tr.innerHTML = `
+          <td><strong>${item.ticker}</strong><div class="tiny">${item.sector||''}</div></td>
+          <td>$${(item.price||0).toFixed(2)}</td>
+          <td class="tiny">${item.direction||''}</td>
+          <td>${item.score}</td>
+          <td class="tiny">${item.catalyst||'—'}</td>
+          <td class="tiny">${(item.volume||0).toFixed(2)}x</td>
+          <td class="tiny">${Math.round((item.momentum||0)*100)}%</td>
+          <td class="tiny">${item.confirmations}</td>
+          <td class="tiny">${item.entry||'—'}</td>
+          <td class="tiny">${item.target||'—'}</td>
+          <td class="tiny">${item.stop||'—'}</td>
+          <td class="tiny">${item.invalidation||'—'}</td>
+          <td><span class="badge ${item.status==='PRIME'?'prime':(item.status==='WATCH'?'watch':'no')}">${item.status}</span></td>
+        `;
+        tr.addEventListener('click', ()=>openModal(item));
+        setupsBody.appendChild(tr);
+      });
+      // sortable headers
+      document.querySelectorAll('#setupsTable thead th').forEach(th=>{
+        th.style.cursor='pointer'; th.onclick = ()=>{
+          const key = th.dataset.key;
+          setups.sort((a,b)=>{ if(key==='ticker') return a.ticker.localeCompare(b.ticker); if(key==='price' || key==='score' || key==='confirmations' || key==='volume') return (b[key]||0)-(a[key]||0); return (a[key]||'').toString().localeCompare((b[key]||'').toString()); });
+          renderSetupsTable(setups);
+        };
+      });
+    }catch(e){console.error('renderSetupsTable', e);}  
   }
-}
 
-document.getElementById("lastScan").textContent=clock();
+  function safeCall(fn){ try{ fn(); }catch(e){ console.error('safeCall', e); } }
 
-timer=setInterval(()=>{
-  if(auto) runScan();
-},30000);
+  function openModal(item){
+    try{
+      modalTicker.textContent = item.ticker + ' • ' + (item.sector||'');
+      modalScore.textContent = item.score;
+      modalProgress.style.width = Math.max(0, Math.min(100, item.score)) + '%';
+      modalStatus.textContent = item.status + (item.cycleState ? ' • ' + item.cycleState : '');
+      // breakdown
+      modalBreakdown.innerHTML = '';
+      const bd = item.breakdown || {};
+      const contr = (bd.contributions || {});
+      const factors = ['regime','catalyst','volume','momentum','multiTF','confirmations','liquidity','rr'];
+      factors.forEach(f => {
+        const row = document.createElement('div'); row.className='factor-row';
+        row.innerHTML = `<div class="factor-name">${f}</div><div class="factor-value">${bd[f]||0}% <span class="tiny">(${contr[f]||0} pts)</span></div>`;
+        modalBreakdown.appendChild(row);
+      });
+      // reasons
+      const reasons = document.createElement('div'); reasons.className='tiny'; reasons.style.marginTop='8px'; reasons.textContent = (item.reasons && item.reasons.join('; ')) || '';
+      modalBreakdown.appendChild(reasons);
+      // levels
+      modalLevels.textContent = `Entry: ${item.entry||'—'}  Target: ${item.target||'—'}  Stop: ${item.stop||'—'}  Invalidation: ${item.invalidation||'—'}`;
+      // history
+      const history = core.getHistory(item.ticker);
+      modalHistory.innerHTML = history.slice(0,8).map(h => `${new Date(h.timestamp).toLocaleString()} • ${h.score} • ${h.status}`).join('\n');
 
+      modalBackdrop.style.display = 'block'; modal.classList.add('open'); modal.setAttribute('aria-hidden','false');
+    }catch(e){console.error('openModal', e);}  
+  }
+
+  function closeModalFn(){ modalBackdrop.style.display='none'; modal.classList.remove('open'); modal.setAttribute('aria-hidden','true'); }
+  closeModal.addEventListener('click', closeModalFn); modalBackdrop.addEventListener('click', closeModalFn);
+
+  function drawSparkline(canvas, base){ try{ const ctx = canvas.getContext('2d'); const w=canvas.width, h=canvas.height; ctx.clearRect(0,0,w,h); const pts=20; const vals=[]; for(let i=0;i<pts;i++){ vals.push(base*(1 + (Math.sin(i/3)+((Math.random()*0.6)-0.3))/50)); } const min=Math.min(...vals), max=Math.max(...vals); ctx.beginPath(); for(let i=0;i<pts;i++){ const x=i*(w/(pts-1)); const y=h - ((vals[i]-min)/(max-min||1))*h; if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y); } ctx.strokeStyle='#67a8ff'; ctx.lineWidth=1.5; ctx.stroke(); }catch(e){console.warn('sparkline', e);} }
+
+  // UI actions
+  runScanBtn.addEventListener('click', ()=>{ safeCall(()=>{ core.runScan(); }); });
+  addBtn.addEventListener('click', ()=>{ const v = (searchInput.value||'').trim().toUpperCase(); if(!v) return; core.addWatch(v); addFeed('Added '+v+' to watchlist'); searchInput.value=''; });
+  searchInput.addEventListener('keydown', e=>{ if(e.key==='Enter') addBtn.click(); });
+
+  debugToggle.addEventListener('change', (e)=>{ core.debug = !!e.target.checked; addFeed('Debug '+(core.debug?'enabled':'disabled')); });
+
+  function startAuto(){ if(auto) timer=setInterval(()=>core.runScan(), 30000); }
+  autoToggle.addEventListener('click', ()=>{ auto = !auto; autoToggle.textContent = 'AUTO: ' + (auto? 'ON':'OFF'); if(auto) startAuto(); else clearInterval(timer); addFeed('Auto '+(auto?'enabled':'paused')); });
+
+  // initial render
+  renderStatus();
+  core.runScan(); startAuto();
+
+  // expose helper for console
+  window.setDataMode = (m)=>{ core.setDataMode(m); renderStatus(); addFeed('Data mode set to '+m); };
+  window.apexCore = core; // already set but reinforce
+
+})();
 </script>
-
 </body>
 </html>

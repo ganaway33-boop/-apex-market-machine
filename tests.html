@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>APEX+ Tests</title>
+  <style>body{font-family:system-ui,Segoe UI,Roboto,Arial;background:#07121a;color:#e7eef8;padding:18px} .pass{color:#57e389} .fail{color:#ff6b6b} pre{background:#061019;padding:12px;border-radius:8px;overflow:auto;white-space:pre-wrap}</style>
+</head>
+<body>
+  <h1>APEX+ Test Suite (feature/apex-ui)</h1>
+  <div id="results"></div>
+  <pre id="log"></pre>
+  <script src="apex-core.js"></script>
+  <script>
+    (async function(){
+      const logEl = document.getElementById('log');
+      function log(...args){ console.log(...args); logEl.textContent += args.join(' ') + '\n'; }
+
+      const resultsEl = document.getElementById('results');
+      const SUMMARY = [];
+      function addResult(name, ok, msg){ SUMMARY.push({name, ok, msg}); const d=document.createElement('div'); d.innerHTML = `${name}: <strong class="${ok? 'pass':'fail'}">${ok? 'PASS':'FAIL'}</strong> ${msg? ' - '+msg : ''}`; resultsEl.appendChild(d); }
+
+      try{
+        if(!window.apexCore) throw new Error('apexCore not loaded');
+        const core = window.apexCore;
+        core.init({historyLength:50, debug:false, dataMode:'DEMO'});
+        log('apexCore initialized');
+
+        // Clear existing history for deterministic tests
+        try{ Object.keys(localStorage).forEach(k=>{ if(k.startsWith('apex_history_')) localStorage.removeItem(k); }); log('cleared history'); }catch(e){ log('localStorage clear failed', e); }
+
+        // Test 1: deterministic scan
+        const a = await core.runScan();
+        const b = await core.runScan();
+        const aScores = a.map(x=>({t:x.ticker,s:x.score})).sort((p,q)=>p.t.localeCompare(q.t)).map(x=>x.s).join(',');
+        const bScores = b.map(x=>({t:x.ticker,s:x.score})).sort((p,q)=>p.t.localeCompare(q.t)).map(x=>x.s).join(',');
+        const detOk = aScores === bScores;
+        addResult('Deterministic scoring', detOk, detOk? 'Scores identical across scans':'Scores differ across scans');
+        log('aScores', aScores, 'bScores', bScores);
+
+        // Test 2: factor breakdown present
+        const breakdownOk = a.every(item => item.breakdown && item.breakdown.raw !== undefined && item.breakdown.contributions);
+        addResult('Factor breakdown presence', breakdownOk, breakdownOk? 'All items have breakdown':'Missing breakdown in some items');
+
+        // Test 3: PRIME gating - NVDA should be PRIME in demo dataset
+        const nvda = a.find(it=>it.ticker==='NVDA');
+        const nvdaOk = nvda && nvda.status === 'PRIME';
+        addResult('PRIME gating (NVDA)', nvdaOk, nvda ? ('status='+nvda.status) : 'NVDA not found');
+
+        // Test 4: NO-TRADE override - ABCD should be NO-TRADE and have noTradeReasons
+        const abcd = a.find(it=>it.ticker==='ABCD');
+        const abcdOk = abcd && abcd.status === 'NO-TRADE' && abcd.noTradeReasons && abcd.noTradeReasons.length>0;
+        addResult('NO-TRADE override (ABCD)', abcdOk, abcd ? ('status='+abcd.status+', reasons='+ (abcd.noTradeReasons||[]).join(';')) : 'ABCD not found');
+
+        // Test 5: cycle-state CONFIRMED when prior snapshot non-PRIME -> now PRIME
+        const priorNVDA = Object.assign({}, nvda, {score:70, status:'WATCH', timestamp: new Date(Date.now()-3600*1000).toISOString()});
+        localStorage.setItem('apex_history_NVDA', JSON.stringify([priorNVDA]));
+        log('seeded NVDA prior snapshot');
+        const c = await core.runScan();
+        const nvda2 = c.find(it=>it.ticker==='NVDA');
+        const confirmedOk = nvda2 && nvda2.cycleState === 'CONFIRMED';
+        addResult('Cycle-state CONFIRMED (NVDA)', confirmedOk, nvda2 ? ('cycleState='+nvda2.cycleState) : 'NVDA not found after seeded run');
+
+        // Test 6: cycle-state INVALIDATED when prior snapshot PRIME then current NO-TRADE (ABCD)
+        const priorABCD = Object.assign({}, abcd, {score:85, status:'PRIME', timestamp: new Date(Date.now()-3600*1000).toISOString()});
+        localStorage.setItem('apex_history_ABCD', JSON.stringify([priorABCD]));
+        log('seeded ABCD prior PRIME snapshot');
+        const d = await core.runScan();
+        const abcd2 = d.find(it=>it.ticker==='ABCD');
+        const invalidatedOk = abcd2 && abcd2.cycleState === 'INVALIDATED';
+        addResult('Cycle-state INVALIDATED (ABCD)', invalidatedOk, abcd2 ? ('cycleState='+abcd2.cycleState) : 'ABCD not found after seeded run');
+
+        // Test 7: DEMO/LIVE/UNAVAILABLE modes labeled and switchable
+        const initialMode = core.DATA_MODE === 'DEMO';
+        core.setDataMode('UNAVAILABLE');
+        const after = core.DATA_MODE === 'UNAVAILABLE';
+        core.setDataMode('DEMO');
+        addResult('Data mode switchable', initialMode && after, 'initial:DEMO after:UNAVAILABLE');
+
+        // Test 8: PRIME cannot trigger when NO-TRADE exists
+        const primeBlocked = abcd2 && abcd2.status !== 'PRIME';
+        addResult('PRIME blocked by NO-TRADE', primeBlocked, abcd2 ? ('status='+abcd2.status) : 'ABCD missing');
+
+        // Collate
+        window.TEST_SUMMARY = SUMMARY;
+        window.TEST_PASSED = SUMMARY.every(s=>s.ok);
+        log('TEST_PASS=', window.TEST_PASSED);
+      }catch(err){ addResult('Test harness', false, 'Uncaught error: '+err.message); log('uncaught', err); window.TEST_PASSED=false; }
+      finally{ window.TEST_COMPLETE = true; }
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+{
+  "name": "apex-market-machine-tests",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "http-server -p 8080",
+    "test:headless": "node run-tests.js http://localhost:8080/tests.html"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1",
+    "puppeteer": "^20.8.0"
+  }
+}
