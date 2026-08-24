@@ -24,7 +24,23 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-
+      - name: Test Twelve Data API
+        env:
+          TWELVE_DATA_API_KEY: ${{ secrets.TWELVE_DATA_API_KEY }}
+        run: |
+          curl -sS "https://api.twelvedata.com/quote?symbol=NVDA&apikey=${TWELVE_DATA_API_KEY}" \
+            | node -e "
+              let d='';
+              process.stdin.on('data',c=>d+=c);
+              process.stdin.on('end',()=>{
+                const r=JSON.parse(d);
+                if (r.code || r.status === 'error') {
+                  console.error('Twelve Data API failed:', r.message || r);
+                  process.exit(1);
+                }
+                console.log('Twelve Data API OK:', r.symbol, r.close);
+              });
+            "
       - name: Start static server
         run: npx http-server -p 8080 &
 
