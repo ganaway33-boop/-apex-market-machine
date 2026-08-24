@@ -1,0 +1,107 @@
+name: APEX Live Data
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "*/30 * * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  fetch-live-data:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Fetch Twelve Data
+        env:
+          TWELVE_DATA_API_KEY: ${{ secrets.TWELVE_DATA_API_KEY }}
+        run: |
+          node <<'NODE'
+          const fs = require('fs');
+
+          const key = process.env.TWELVE_DATA_API_KEY;
+          if (!key) throw new Error('Missing TWELVE_DATA_API_KEY');
+
+          const symbols = [
+            'NVDA','AMD','AVGO','MSFT','AAPL','AMZN',
+            'META','GOOGL','TSLA','PLTR','IREN','NVAX'
+          ];
+
+          async function get(symbol) {
+            const url =
+              `https://api.twelvedata.com/time_series?symbol=${symbol}` +
+              `&interval=5min&outputsize=30&apikey=${key}`;
+
+            const r = await fetch(url);
+            const d = await r.json();
+
+            if (!r.ok || d.status === 'error' || d.code)
+              throw new Error(`${symbol}: ${d.message || 'API error'}`);
+
+            return d.values || [];
+          }
+
+          const output = [];
+
+          for (const symbol of symbols) {
+            try {
+              const bars = (await get(symbol)).reverse();
+
+              if (bars.length < 5) continue;
+
+              const price = Number(bars.at(-1).close);
+              const previous = Number(bars.at(-2).close);
+              const change = previous
+                ? (price - previous) / previous
+                : 0;
+
+              output.push({
+                ticker: symbol,
+                price,
+                direction: change >= 0 ? 'LONG' : 'SHORT',
+                catalyst: 'Live price/volume feed',
+                volume: 1,
+                momentum: 0.5,
+                r_r: 2,
+                liq: 0.8,
+                multiTF: 1,
+                confSignals: 1,
+                entry: price
+              });
+
+            } catch(e) {
+              console.log(e.message);
+            }
+          }
+
+          if (!output.length)
+            throw new Error('No live data returned');
+
+          fs.writeFileSync(
+            'live-data.json',
+            JSON.stringify({
+              generatedAt: new Date().toISOString(),
+              provider: 'Twelve Data',
+              symbols: output
+            }, null, 2) + '\n'
+          );
+
+          console.log(`Generated ${output.length} live symbols`);
+          NODE
+
+      - name: Publish live data
+        run: |
+          git config user.name "APEX Live Bot"
+          git config user.email "actions@github.com"
+          git add live-data.json
+          git diff --cached --quiet || git commit -m "Update APEX live market data"
+          git push
