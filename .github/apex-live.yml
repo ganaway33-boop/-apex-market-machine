@@ -1,0 +1,160 @@
+name: APEX Live Data
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "*/30 * * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  fetch-live-data:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Fetch Twelve Data
+        env:
+          TWELVE_DATA_API_KEY: ${{ secrets.TWELVE_DATA_API_KEY }}
+        run: |
+          node <<'NODE'
+          const fs = require('fs');
+
+          const key = process.env.TWELVE_DATA_API_KEY;
+          if (!key) throw new Error('Missing TWELVE_DATA_API_KEY');
+
+          const symbols = [
+            'NVDA','AMD','AVGO','MSFT','AAPL','AMZN',
+            'META','GOOGL','TSLA','PLTR','IREN','NVAX'
+          ];
+
+          const clamp = (v,min,max) => Math.max(min,Math.min(max,v));
+
+          async function get(symbol) {
+            const url =
+              `https://api.twelvedata.com/time_series?symbol=${symbol}` +
+              `&interval=5min&outputsize=30&apikey=${key}`;
+
+            const r = await fetch(url);
+            const d = await r.json();
+
+            if (!r.ok || d.status === 'error' || d.code)
+              throw new Error(`${symbol}: ${d.message || 'API error'}`);
+
+            return d.values || [];
+          }
+
+          const output = [];
+
+          for (const symbol of symbols) {
+            try {
+              const bars = (await get(symbol)).reverse();
+
+              if (bars.length < 5) continue;
+
+              const price = Number(bars.at(-1).close);
+              const previous = Number(bars.at(-2).close);
+              const change = previous
+                ? (price - previous) / previous
+                : 0;
+
+              const closes = bars
+                .map(x => Number(x.close))
+                .filter(Number.isFinite);
+
+              const volumes = bars
+                .map(x => Number(x.volume))
+                .filter(Number.isFinite);
+
+              const recent = closes.slice(-6);
+              const older = closes.slice(-21,-6);
+
+              const recentAvg =
+                recent.reduce((a,b)=>a+b,0) / recent.length;
+
+              const olderAvg =
+                older.reduce((a,b)=>a+b,0) / (older.length || 1);
+
+              const momentum = olderAvg
+                ? clamp((recentAvg / olderAvg - 0.985) / 0.03,0,1)
+                : 0.5;
+
+              const recentVol =
+                volumes.slice(-5).reduce((a,b)=>a+b,0) /
+                Math.min(5,volumes.length);
+
+              const baseVol =
+                volumes.slice(0,-5).reduce((a,b)=>a+b,0) /
+                Math.max(1,volumes.length-5);
+
+              const volume = baseVol
+                ? recentVol / baseVol
+                : 1;
+
+              const direction = change >= 0 ? 'LONG' : 'SHORT';
+
+              const riskPct =
+                clamp(Math.abs(change) * 3 + 0.01,0.01,0.04);
+
+              const stop = direction === 'LONG'
+                ? price * (1-riskPct)
+                : price * (1+riskPct);
+
+              const target = direction === 'LONG'
+                ? price * (1+riskPct*2)
+                : price * (1-riskPct*2);
+
+              output.push({
+                ticker: symbol,
+                price,
+                direction,
+                sector: null,
+                catalyst: 'Live price/volume feed',
+                catalystCred: 0.25,
+                volume,
+                momentum,
+                r_r: 2,
+                liq: 0.8,
+                multiTF: 1,
+                confSignals: 1,
+                entry: price,
+                target,
+                stop,
+                invalidation: stop
+              });
+
+            } catch(e) {
+              console.log(e.message);
+            }
+          }
+
+          if (!output.length)
+            throw new Error('No live data returned');
+
+          fs.writeFileSync(
+            'live-data.json',
+            JSON.stringify({
+              generatedAt: new Date().toISOString(),
+              provider: 'Twelve Data',
+              symbols: output
+            }, null, 2) + '\n'
+          );
+
+          console.log(`Generated ${output.length} live symbols`);
+          NODE
+
+      - name: Publish live data
+        run: |
+          git config user.name "APEX Live Bot"
+          git config user.email "actions@github.com"
+          git add live-data.json
+          git diff --cached --quiet || git commit -m "Update APEX live market data"
+          git push
